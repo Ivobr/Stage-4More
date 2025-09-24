@@ -5,14 +5,14 @@ robot = Robot.RPC('192.168.58.2')
 
 
 def auxservoset(self):
-    """485扩展轴参数设置"""
+    """485 extension axis parameter setting"""
     error = robot.AuxServoSetParam(servoId=1,servoCompany=1,servoModel=1,servoSoftVersion=1,servoResolution=131072,axisMechTransRatio=13.45)
     print("AuxServoSetParam return ",error)
     error,servoCompany,servoModel,servoSoftVersion,servoResolution,axisMechTransRatio = robot.AuxServoGetParam(servoId=1)
-    print("伺服驱动器厂商:",servoCompany,"伺服驱动器型号:",servoModel,"servoSoftVersion:",servoSoftVersion,"编码器分辨率:",servoResolution,"机械传动比:",axisMechTransRatio)
+    print("Servo driver company:",servoCompany,"Servo driver model:",servoModel,"servoSoftVersion:",servoSoftVersion,"Encoder resolution:",servoResolution,"Mechanical transmission ratio:",axisMechTransRatio)
 
 def auxservoenable(self):
-    """485扩展轴使能、回零、速度模式"""
+    """485 extension axis enable, homing, speed mode"""
     error = robot.AuxServoSetControlMode(servoId=1,mode=1)
     print("AuxServoSetControlMode return ", error)
     time.sleep(2)
@@ -37,7 +37,7 @@ def auxservoenable(self):
     time.sleep(2)
 
 def auxservoposmodel(self):
-    """485扩展轴位置模式"""
+    """485 extension axis position mode"""
     error = robot.AuxServoSetControlMode(servoId=1, mode=0)
     time.sleep(1)
     error = robot.AuxServoEnable(servoId=1, status=0)
@@ -55,7 +55,7 @@ def auxservoposmodel(self):
     time.sleep(2)
 
 def auxservostate(self):
-    """485扩展轴状态检测"""
+    """485 extension axis status detection"""
     error = robot.AuxServoSetControlMode(servoId=1, mode=1)
     time.sleep(1)
     error = robot.AuxServoEnable(servoId=1, status=0)
@@ -73,11 +73,11 @@ def auxservostate(self):
     print("AuxServosetStatusID return ", error)
 
     while True:
-        print("扩展轴位置：",robot.robot_state_pkg.auxState.servoPos,"扩展轴速度：",robot.robot_state_pkg.auxState.servoVel)
+        print("Extension axis position:",robot.robot_state_pkg.auxState.servoPos,"Extension axis speed:",robot.robot_state_pkg.auxState.servoVel)
         time.sleep(0.1)
 
 def auxservoacc(self):
-    """485扩展轴加速度"""
+    """485 extension axis acceleration"""
     error = robot.AuxServoSetControlMode(servoId=1, mode=0)
     time.sleep(1)
     error = robot.AuxServoEnable(servoId=1, status=0)
@@ -95,7 +95,7 @@ def auxservoacc(self):
     time.sleep(2)
 
 def auxservostop(self):
-    """485扩展轴急停"""
+    """485 extension axis emergency stop"""
     error = robot.AuxServoSetParam(1, 1, 1, 1, 130172, 15.45)
     print("AuxServoSetParam return", error)
 
@@ -145,7 +145,7 @@ def auxservostop(self):
             n = n + 1
 
 def auxservostopstate(self):
-    """485扩展轴急停状态打印"""
+    """485 extension axis emergency stop status print"""
     error = robot.AuxServoSetParam(1, 1, 1, 1, 130172, 15.45)
     print("AuxServoSetParam return", error)
 
@@ -210,7 +210,7 @@ def auxservostopstate(self):
             n=n+1
 
 def auxservovelacc(self):
-    """485扩展轴速度模式加速度"""
+    """485 extension axis speed mode acceleration"""
     error = robot.AuxServoSetControlMode(servoId=1, mode=1)
     time.sleep(1)
     error = robot.AuxServoEnable(servoId=1, status=0)
@@ -231,7 +231,7 @@ def auxservovelacc(self):
     time.sleep(2)
 
 def auxservoposacc(self):
-    """485扩展轴位置模式加速度"""
+    """485 extension axis position mode acceleration"""
     error = robot.AuxServoSetControlMode(servoId=1, mode=0)
     time.sleep(1)
     error = robot.AuxServoEnable(servoId=1, status=0)
@@ -249,7 +249,7 @@ def auxservoposacc(self):
     time.sleep(4)
 
 def auxservoaccchange(self):
-    """485扩展轴更改加速度"""
+    """485 extension axis change acceleration"""
     error = robot.AuxServoSetControlMode(servoId=1, mode=0)
     time.sleep(1)
     error = robot.AuxServoEnable(servoId=1, status=0)
