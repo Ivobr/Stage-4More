@@ -2,12 +2,14 @@
 
 ## Move
 
-``(Type, Cords, Speed,steps)``
+``(Type, Cords)``
 
-``Type``: Wat voor aansturing: Ruw (Joint_point) of Precies (Cart_point)\
+``Type``: Wat voor aansturing: onnauwkeurig (Joint_point) of Precies (Cart_point)\
 ``Cords``: De array met de punten voor het bewegen\
-``Speed``: misschien overbodig maar anders de snelheid van het bewegen\
-``Steps``: Misschien overbodig maar anders de stappen waarmee de servo beweegt voor extra precisie
+
+
+Voor cartpos maybe [``GetActualToolFlangePose(flag=1)``](https://fairino-doc-en.readthedocs.io/latest/SDKManual/PythonRobotStatusInquiry.html#get-the-current-end-flange-position)
+of [``GetActualTCPPose(flag=1)``](https://fairino-doc-en.readthedocs.io/latest/SDKManual/PythonRobotStatusInquiry.html#get-current-tool-position)
 
 ## Grijper aansturen
 
