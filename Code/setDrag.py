@@ -1,0 +1,15 @@
+from fairino import Robot
+import time
+
+robot = Robot.RPC('192.168.58.2')
+
+robot.DragTeachSwitch(1)
+try:
+    while True:
+        print("lil bitch ass clanker")
+        print(robot.GetActualJointPosDegree())
+        print(robot.GetActualTCPPose())
+        time.sleep(1)
+except KeyboardInterrupt:
+    robot.DragTeachSwitch(0)
+    robot.CloseRPC()
