@@ -1,0 +1,17 @@
+Opleverset:
+	-Code
+	- documentatie
+		-probleem omschrijving
+		-Requirements
+		-Risico invertarisatie
+		-Testplan + Testrapport
+		-Stackholders?!?!?!
+		-onderzoek (af)
+	- diagrammen
+		-flowdiagram
+		
+	
+	
+	Einde:
+		- advies rapport
+		- demo video

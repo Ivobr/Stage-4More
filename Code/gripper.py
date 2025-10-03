@@ -22,7 +22,7 @@ try:
 
     for pos, desc in movements:
         print(f"Moving to {pos}mm ({desc})...")
-        rtn = robot.MoveGripper(2, pos, 30, 8, 1000, 0, 0, 0, 0, 0)
+        rtn = robot.MoveGripper(2, pos, 100, 8, 1000, 0, 0, 0, 0, 0)
         print(f"Move result: {rtn}")
         
         if rtn == 0:
