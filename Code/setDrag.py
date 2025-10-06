@@ -9,6 +9,7 @@ try:
         print("lil bitch ass clanker")
         print(robot.GetActualJointPosDegree())
         print(robot.GetActualTCPPose())
+        pos = robot.GetActualTCPPose()
         time.sleep(1)
 except KeyboardInterrupt:
     robot.DragTeachSwitch(0)
