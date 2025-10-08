@@ -27,13 +27,13 @@ rtn = robot.MoveGripper(2, 78.0, 100, 8, 10000, 0, 0, 0, 0, 0)
 
 rtn = robot.MoveJ(joint_pos=rest_pos, tool=tool, user=user, vel=vel, blendT=blendT)
 print(rtn)
-
-time.sleep(1)
-rtn = robot.MoveJ(joint_pos=drop_pos, tool=tool, user=user, vel=vel, blendT=blendT)
-rtn = robot.MoveGripper(2, 0.0, 50, 8, 10000, 0, 0, 0, 0, 0)
-print(f"movej error code: {rtn}")
-rtn = robot.MoveJ(joint_pos=straight, tool=tool, user=user, vel=vel, blendT=blendT)
-print(rtn)
+#
+# time.sleep(1)
+# rtn = robot.MoveJ(joint_pos=drop_pos, tool=tool, user=user, vel=vel, blendT=blendT)
+# rtn = robot.MoveGripper(2, 0.0, 50, 8, 10000, 0, 0, 0, 0, 0)
+# print(f"movej error code: {rtn}")
+# rtn = robot.MoveJ(joint_pos=straight, tool=tool, user=user, vel=vel, blendT=blendT)
+# print(rtn)
 rtn = robot.MoveGripper(2, 100.0, 50, 8, 10000, 0, 0, 0, 0, 0)
 
 

@@ -36,5 +36,9 @@ Hier alle functies welke worden gebruikt voor het verplaatsen van de arm.
     - user = 0
     - vel = percentage van snelheid arm (wordt gecapt door de webapp dus als de webapp wordt gecapt op 30% en je kiest ``vel = 10`` wordt er op 3% snelheid gedraaid)
     - blendT = 0
-### ``MoveL``
-    volgens mij xyz waardes
+### ``MoveCart(desc_pos, tool, user, blendT)``
+    - desc_pos = array met xyz waarden en de rotatie - [x,y,z,rx,ry,rz]
+    
+### ``robot.ServoJ(joint_pos, axisPos, cmdT, filterT, gain)``
+    Voor snelle preciese bewegingen van de servo motoren zelf
+    In 1 keer bewegen via MoveJ is sneller

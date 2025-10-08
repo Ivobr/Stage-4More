@@ -8,7 +8,7 @@ joint_pos = [-11.904, -99.669, 117.473, -108.616, -91.726, 74.256]  # random sta
 rest_pos = [10,10,10,10,10,10]
 
 
-# robot = Robot.RPC('192.168.52.2')
+robot = Robot.RPC('192.168.52.2')
 
 def rest():
     if joint_pos == rest_pos:
