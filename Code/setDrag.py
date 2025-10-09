@@ -2,11 +2,11 @@ from fairino import Robot
 import time
 
 robot = Robot.RPC('192.168.58.2')
-
 robot.DragTeachSwitch(1)
 try:
     while True:
-        print("lil bitch ass clanker")
+        pos = robot.GetActualTCPPose()
+        print("Current position")
         print(robot.GetActualJointPosDegree())
         print(robot.GetActualTCPPose())
         pos = robot.GetActualTCPPose()

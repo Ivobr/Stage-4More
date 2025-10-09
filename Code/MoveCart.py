@@ -2,14 +2,15 @@ from fairino import Robot
 import time
 
 robot = Robot.RPC('192.168.58.2')
+robot.ActGripper(2,0)
+time.sleep(1)
+robot.ActGripper(2, 1)
+time.sleep(1)
 
 cords = [
     # 375 -> -275
-    [-275, 574, 708, 173, -6.94, 136],
-    [-45, 651,706, -171, -8.53, 39.423],
-    [7.62, 642, 708, -173, -7.55, 44.8],
-    [56.2, 649, 709, -172, -10.4, 41.48],
-    [375, -532, 709, -172, -10.4, -98]
+    [625, 4.438, -32.246, -179, -0.404, 41.868], # pickup point
+    [-76.302, -472.35, 123.296, -179.11, -1.699, -40.09], # drop point
 ]
 
 # basic setup
@@ -17,29 +18,22 @@ tool = user = 0
 blendT = -1.0
 flag = 0
 
+robot.MoveGripper(2, 0, 100, 8, 10000, 0, 0, 0, 0, 0)
+cords[0][2]+=300
+robot.MoveCart(desc_pos=cords[0], tool=tool, blendT=blendT, user=user)
+cords[0][2]-=300
+robot.MoveCart(desc_pos=cords[0], tool=tool, blendT=blendT, user=user)
 
-rtn, pos = robot.GetActualTCPPose()
-print("before +20",pos)
-pos[2] += 200
-rtn = robot.MoveCart(desc_pos=pos, tool=tool, user=user, blendT=blendT)
-print(rtn)
-print("\n")
+robot.MoveGripper(2, 78, 100, 8, 10000, 0, 0, 0, 0, 0)
 
-rtn, pos = robot.GetActualTCPPose();
-print("After +20",pos)
-print("\n")
+cords[0][2]+=300
+robot.MoveCart(desc_pos=cords[0], tool=tool, blendT=blendT, user=user)
 
-rtn, pos = robot.GetActualJointAccDegree()
-print("Before turingin gripper",pos)
-print("\n")
-pos[5] += 20
-rtn = robot.MoveJ(joint_pos=pos, tool=tool, user=user, blendT=blendT)
-print(rtn)
-print(robot.GetActualJointAccDegree())
-print("\n")
+cords[1][2]+=300
+robot.MoveCart(desc_pos=cords[1], tool=tool, blendT=blendT, user=user)
+cords[1][2]-=300
+robot.MoveCart(desc_pos=cords[1], tool=tool, blendT=blendT, user=user)
+robot.MoveGripper(2, 0, 100, 8, 10000, 0, 0, 0, 0, 0)
 
-
-rtn, pos = robot.GetActualTCPPose();
-print("After j6 turned", pos)
-
-
+cords[1][2]+=300
+robot.MoveCart(desc_pos=cords[1], tool=tool, blendT=blendT, user=user)
