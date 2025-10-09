@@ -105,5 +105,5 @@ move(joint_points[1])
 move(drop_points_cords[dropped])
 print("Dropped: ", dropped)
 robot.CloseRPC()
-
+#branch public
 
