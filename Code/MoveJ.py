@@ -19,23 +19,33 @@ joint_pos = [
 vel = acc = ovl = 100
 tool = user = 0
 blendT = -1.0
-robot.SetSpeed(50)
+robot.SetSpeed(100)
 
+# Open gripper
 robot.MoveGripper(2, 0, 100, 8, 10000, 0, 0, 0, 0, 0)
+
+# Move to 30cm above the pickup point
 robot.MoveJ(joint_pos=joint_pos[2], tool=tool, blendT=blendT, vel=vel, user=user)
+
+# Move to pickup point and close gripper
 rtn = robot.MoveJ(joint_pos=joint_pos[0], tool=tool, blendT=blendT, vel=vel, user=user)
 print(rtn)
 robot.MoveGripper(2, 78, 100, 8, 10000, 0, 0, 0, 0, 0)
 
+# Return to 30cm above the pickup point
 rtn = robot.MoveJ(joint_pos=joint_pos[2], tool=tool, blendT=blendT, vel=vel, user=user)
 print(rtn)
 
-rtn = robot.MoveJ(joint_pos=joint_pos[1], tool=tool, blendT=blendT, vel=vel, user=user)
-robot.MoveGripper(2, 0, 100, 8, 10000, 0, 0, 0, 0, 0)
-
-rtn, pos = robot.GetActualTCPPose()
-print(pos)
+# Move to 30cm above drop point
 rtn = robot.MoveJ(joint_pos=joint_pos[3], tool=tool, blendT=blendT, vel=vel, user=user)
 print(rtn)
 
+# Move to drop point and open gripper
+rtn = robot.MoveJ(joint_pos=joint_pos[1], tool=tool, blendT=blendT, vel=vel, user=user)
+print(rtn)
+rtn = robot.MoveGripper(2, 0, 100, 8, 10000, 0, 0, 0, 0, 0)
+print(rtn)
+
+# Move back to 30cm above the drop point
+rtn = robot.MoveJ(joint_pos=joint_pos[3], tool=tool, blendT=blendT, vel=vel, user=user)
 print(rtn)
