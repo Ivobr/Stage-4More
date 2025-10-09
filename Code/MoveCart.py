@@ -54,3 +54,16 @@ print(rtn)
 cords[1][2]+=300
 rtn = robot.MoveCart(desc_pos=cords[1], tool=tool, blendT=blendT, user=user)
 print(rtn)
+
+
+cords[1][2]-=300
+rtn = robot.MoveCart(desc_pos=cords[1], tool=tool, blendT=blendT, user=user)
+rtn = robot.MoveGripper(2, 78, 100, 8, 10000, 0, 0, 0, 0, 0)
+cords[1][2]+=300
+rtn = robot.MoveCart(desc_pos=cords[1], tool=tool, blendT=blendT, user=user)
+rtn = robot.MoveCart(desc_pos=cords[0], tool=tool, blendT=blendT, user=user)
+cords[0][2]-=300
+rtn = robot.MoveCart(desc_pos=cords[0], tool=tool, blendT=blendT, user=user)
+rtn = robot.MoveGripper(2, 0, 100, 8, 10000, 0, 0, 0, 0, 0)
+cords[0][2]+=300
+rtn = robot.MoveCart(desc_pos=cords[0], tool=tool, blendT=blendT, user=user)
