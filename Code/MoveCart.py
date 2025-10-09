@@ -41,3 +41,5 @@ print("\n")
 
 rtn, pos = robot.GetActualTCPPose();
 print("After j6 turned", pos)
+
+
