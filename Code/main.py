@@ -1,62 +1,111 @@
 from fairino import Robot
 import time
 import random
+# Establish a connection with the robot controller and return a robot object if the connection is successful
+robot = Robot.RPC('192.168.58.2')
+joint_points = [
+    [-89, -55, -0.3, -122, -92, 45],
+    [-73.078, -52.969, 3.627, -50.079, -92.619, -119.16], # pickup
+    [-276, 574, 709, 173, -6.95, 136.28]    # pickup xyz rx ry rz
 
-sensor = False
-band = False
-joint_pos = [-11.904, -99.669, 117.473, -108.616, -91.726, 74.256]  # random start position
-rest_pos = [10,10,10,10,10,10]
+]
+
+drop_points = [
+     [-95, -50, -0.5, -51.6, -90, -45],    # drop point 1
+    [-100, -50.74, -0.42, -48.80, -88.92, -54.99], # drop point 2
+    [-104, -50, -0.91, -51.7, -90, -56]    # drop point 3
+]
+drop_points_cords = [
+    [-45, 651,706, -171, -8.53, 39.423],
+    [-276, 574, 708, 173, -6.94, 136],
+    [56.2, 649, 709, -172, -10.4, 41.48]
+]
+
+offset_pos = [0] * 6
+epos = [0] * 4
+tool = user = 0
+vel = acc = ovl = 100.0
+blendT = -1.0
+flag = 0
+robot.SetSpeed(75)
+robot.ActGripper(2,0)
 
 
-robot = Robot.RPC('192.168.52.2')
+pick = True
+dropped = 0
+time.sleep(3)
+robot.ActGripper(2, 1)
+time.sleep(3)
 
-def rest():
-    if joint_pos == rest_pos:
+def inputHandle():
+    print("reading sensor")
+    while True:
+        num = random.randint(1, 10)
+        if num == 4:
+            break
+        print(num)
         time.sleep(1)
+
+
+def gripper(pos, speed):
+    rtn = robot.MoveGripper(2, pos, speed, 8, 10000, 0, 0,0 ,0, 0)
+    print(rtn)
+
+def move(point):
+    global dropped
+    global pick
+    if pick:
+        # rtn = robot.MoveCart(desc_pos=point, tool=tool, user=user, blendT=blendT, vel=vel)
+        rtn = robot.MoveJ(joint_pos=point, tool=tool, user=user, blendT=blendT, vel=vel)
+        print(rtn)
+        print("Open gripper")
+
+        gripper(0, vel)
+        print("Wait for closing signal")
+        # text = input("Press enter to close gripper")
+
+        gripper(78, vel)
+        print("Gripper closed")
+
+        rtn, pos = robot.GetActualTCPPose()
+        print(pos)
+        pos[1] -= 60
+        pos[2] += 40
+        print(pos)
+        rtn = robot.MoveCart(desc_pos=pos, tool=tool, user=user, blendT=blendT)
+        print(rtn)
+
+        pick = False
     else:
-        move(rest_pos)
+        rtn = robot.MoveJ(joint_pos=point,tool=tool,user=user,vel=vel)
+        # rtn = robot.MoveCart(desc_pos=point, tool=tool, user=user, blendT=blendT, vel=vel)
+        print(rtn)
+        gripper(0, vel)
+        rtn, pos = robot.GetActualTCPPose()
+        print(pos)
+        pos[1] -= 60
+        pos[2] += 40
+        print(pos)
+        rtn = robot.MoveCart(desc_pos=pos, tool=tool, user=user, blendT=blendT)
+        print("Move Cart return", rtn)
+        pos = robot.GetActualTCPPose()
+        print(pos)
+        dropped = dropped + 1
+        pick = True
 
 
-def inputsensor():
-    global sensor
-    global joint_pos
-    print("Reading sensor")
-    # sensor.read(type shit)
-    num = random.randint(1, 10)
-    print(num)
-    if num == 4:
-        sensor = True
-        joint_pos = [0, 0, 0, 0, 0, 0]  # band pos
+inputHandle()
+move(joint_points[1])
+print("Move to drop point")
+print(dropped, "Dropped now before doing it")
+move(drop_points[dropped])
+print("Dropped: ", dropped)
+move(joint_points[1])
+move(drop_points[dropped])
+print("Dropped: ", dropped)
+move(joint_points[1])
+move(drop_points[dropped])
+print("Dropped: ", dropped)
+robot.CloseRPC()
 
 
-def move(moveTo):
-    global joint_pos
-    global band
-    print("Moving to")
-    print(moveTo)
-    if not band:
-        print("Move to band")
-        # rtn = robot.MoveJ(joint_pos=moveTo, tool=tool, user=user, exaxis_pos=epos, blendT=blendT, offset_flag=flag, offset_pos=offset_pos1)
-        band = True
-    else:
-        print("Move to flower")
-        # err, pose = robot.GetActualTCPPose(0) # pos = [x,y,z,rx,ry,rz]
-        # pose[2] -= 20.0 # move down 20 mm
-        # rtn = robot.MoveL(cart_pos=pose, tool=0, user=0, vel=50, acc=50)
-
-
-    print("moved")
-    joint_pos = moveTo
-
-def main():
-    print(joint_pos)
-    while not sensor:
-        rest()
-        inputsensor()
-    print("Done")
-    move(joint_pos)
-
-
-if __name__ == '__main__':
-    main()
-    # robot.CloseRPC()

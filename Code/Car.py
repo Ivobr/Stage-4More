@@ -17,8 +17,8 @@ drop_points = [
 ]
 drop_points_cords = [
     [-45, 651,706, -171, -8.53, 39.423],
-    [-276, 574, 708, 173, -6,94, 136],
-    [56.2, 649, 709, -172, -10,4, 41,48]
+    [-276, 574, 708, 173, -6.94, 136],
+    [56.2, 649, 709, -172, -10.4, 41.48]
 ]
 
 offset_pos = [0] * 6
@@ -74,8 +74,8 @@ def move(point):
 
         pick = False
     else:
-        # rtn = robot.MoveJ(joint_pos=point,tool=tool,user=user,vel=vel)
-        rtn = robot.MoveCart(desc_pos=point, tool=tool, user=user, blendT=blendT, vel=vel)
+        rtn = robot.MoveJ(joint_pos=point,tool=tool,user=user,vel=vel)
+        # rtn = robot.MoveCart(desc_pos=point, tool=tool, user=user, blendT=blendT, vel=vel)
         print(rtn)
         rtn = robot.MoveGripper(2, 0, 100, 8, 10000, 0, 0, 0, 0, 0)
         print(rtn)
@@ -96,13 +96,13 @@ inputHandle()
 move(joint_points[1])
 print("Move to drop point")
 print(dropped, "Dropped now before doing it")
-move(drop_points_cords[dropped])
+move(drop_points[dropped])
 print("Dropped: ", dropped)
 move(joint_points[1])
-move(drop_points_cords[dropped])
+move(drop_points[dropped])
 print("Dropped: ", dropped)
 move(joint_points[1])
-move(drop_points_cords[dropped])
+move(drop_points[dropped])
 print("Dropped: ", dropped)
 robot.CloseRPC()
 
