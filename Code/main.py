@@ -2,7 +2,9 @@ from fairino import Robot
 import time
 import random
 # Establish a connection with the robot controller and return a robot object if the connection is successful
-robot = Robot.RPC('192.168.58.2')
+robot
+
+# moet nog gekozen worden
 joint_points = [
     [-89, -55, -0.3, -122, -92, 45],
     [-73.078, -52.969, 3.627, -50.079, -92.619, -119.16], # pickup
@@ -15,27 +17,35 @@ drop_points = [
     [-100, -50.74, -0.42, -48.80, -88.92, -54.99], # drop point 2
     [-104, -50, -0.91, -51.7, -90, -56]    # drop point 3
 ]
+
 drop_points_cords = [
     [-45, 651,706, -171, -8.53, 39.423],
     [-276, 574, 708, 173, -6.94, 136],
     [56.2, 649, 709, -172, -10.4, 41.48]
 ]
 
+# basic variables
 offset_pos = [0] * 6
 epos = [0] * 4
 tool = user = 0
 vel = acc = ovl = 100.0
 blendT = -1.0
 flag = 0
-robot.SetSpeed(75)
-robot.ActGripper(2,0)
+
 
 
 pick = True
 dropped = 0
-time.sleep(3)
-robot.ActGripper(2, 1)
-time.sleep(3)
+
+
+def setup():
+    global robot
+    robot = Robot.RPC('192.168.58.2')
+    robot.SetSpeed(75)
+    robot.ActGripper(2, 0)
+    time.sleep(3)
+    robot.ActGripper(2, 1)
+    time.sleep(3)
 
 def inputHandle():
     print("reading sensor")
@@ -51,6 +61,8 @@ def gripper(pos, speed):
     rtn = robot.MoveGripper(2, pos, speed, 8, 10000, 0, 0,0 ,0, 0)
     print(rtn)
 
+#* NEEDS CLEAN UP A$AP
+# Just dont be dumb while doing it*#
 def move(point):
     global dropped
     global pick
@@ -94,18 +106,25 @@ def move(point):
         pick = True
 
 
-inputHandle()
-move(joint_points[1])
-print("Move to drop point")
-print(dropped, "Dropped now before doing it")
-move(drop_points[dropped])
-print("Dropped: ", dropped)
-move(joint_points[1])
-move(drop_points[dropped])
-print("Dropped: ", dropped)
-move(joint_points[1])
-move(drop_points[dropped])
-print("Dropped: ", dropped)
-robot.CloseRPC()
 
 
+
+def main():
+    print("main")
+    inputHandle()
+    move(joint_points[1])
+    print("Move to drop point")
+    print(dropped, "Dropped now before doing it")
+    move(drop_points[dropped])
+    print("Dropped: ", dropped)
+    move(joint_points[1])
+    move(drop_points[dropped])
+    print("Dropped: ", dropped)
+    move(joint_points[1])
+    move(drop_points[dropped])
+    print("Dropped: ", dropped)
+    robot.CloseRPC()
+
+
+if __name__ == "__main__":
+    main()
