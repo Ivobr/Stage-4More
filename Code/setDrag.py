@@ -6,7 +6,7 @@ robot.DragTeachSwitch(1)
 try:
     while True:
         pos = robot.GetActualTCPPose()
-        print("Current position")
+        print("New position")
         print(robot.GetActualJointPosDegree())
         print(robot.GetActualTCPPose())
         pos = robot.GetActualTCPPose()
