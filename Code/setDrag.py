@@ -6,7 +6,7 @@ robot = Robot.RPC('192.168.58.2')
 robot.DragTeachSwitch(1)
 try:
     while True:
-        print("lil bitch ass clanker")
+        print("new position")
         print(robot.GetActualJointPosDegree())
         print(robot.GetActualTCPPose())
         pos = robot.GetActualTCPPose()
