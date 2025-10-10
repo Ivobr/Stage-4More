@@ -2,10 +2,10 @@ from fairino import Robot
 import time
 
 robot = Robot.RPC('192.168.58.2')
-
 robot.DragTeachSwitch(1)
 try:
     while True:
+        pos = robot.GetActualTCPPose()
         print("New position")
         print(robot.GetActualJointPosDegree())
         print(robot.GetActualTCPPose())
