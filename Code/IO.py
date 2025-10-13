@@ -13,7 +13,7 @@ time.sleep(1)
 
 cords = [
     # 375 -> -275
-    [625, 4.438, -32.246, -179, -0.404, 41.868], # pickup point
+    [625, 4.438, -32.046, -179, -0.404, 41.868], # pickup point
     [-76.302, -472.35, 123.796, -179.11, -1.699, -40.09], # drop point
 ]
 #*
@@ -89,5 +89,7 @@ def main():
     IO()
     move()
 
-main()
-robot.SetDO(0,0)
+
+if __name__ == '__main__':
+    main()
+    robot.SetDO(0,0)
