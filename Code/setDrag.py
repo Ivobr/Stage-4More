@@ -1,7 +1,7 @@
 from fairino import Robot
 import time
 
-robot = Robot.RPC('192.168.58.2')
+robot = Robot.RPC('192.168.178.23')
 robot.DragTeachSwitch(1)
 try:
     while True:
