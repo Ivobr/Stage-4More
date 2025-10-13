@@ -1,8 +1,7 @@
 from fairino import Robot
 import time
 
-sensor = False
-band = False
+state = False
 joint_pos = [[9.724, -112.39, -94.249, -63.036, 90, -122.14], # Pick up point + 30cm
              [-87.29,-86.502, -101.31,-81.686,91.851,-137.205] # Drop point + 30 cm
 ]
@@ -20,8 +19,7 @@ robot = Robot.RPC('192.168.52.2')
 def setup():
     # Reset gripper om er zeker van te zijn dat die werkt
     # Zorg dat niks tussen de vingers zit het 0 en 100 punt wordt bepaald
-
-    robot.ActGripper(2,0) # verander 2 naar coresponding index
+    robot.ActGripper(2,0) # verander 2 naar aangesloten index
     time.sleep(1)
     robot.ActGripper(2,1)
     time.sleep(1)
@@ -30,18 +28,16 @@ def setup():
 
 
 def inputsensor():
-    global sensor
-    rtn, status = robot.GetDI(0) # juiste pin invullen
-    if status:
-        sensor = True
+    global state
+    rtn, state = robot.GetDI(0) # juiste pin invullen
+    if state:
+        state = True
 
 def moveGripper(pos):
     rtn = robot.MoveGripper(2, pos, 100, 8, 10000, 0, 0, 0, 0, 0)
     print("Moving gripper: ", rtn)
 
 def move(moveTo, dif):
-    global joint_pos
-    global band
     print("Moving to")
     print(moveTo)
     if moveTo != 0:
@@ -57,24 +53,32 @@ def move(moveTo, dif):
 
 def main():
     moveGripper(0)
-    while not sensor:
+    while state == False:
         inputsensor()
 
+    # ga naar band als die daar niet al is en open grijper
     move(joint_pos[0], 0)
     moveGripper(0)
-    print("Wait a sec")
-    time.sleep(1)
 
     # zet moveTo als 0 om de lineare bewiging te gebruiken
+
+    # Ga omlaag en pak object en ga weer omhoog
     move(0, -30)
     moveGripper(78)
     move(0, 30)
-    move(joint_pos[2], 0)
+
+    # ga naar drop punt
+    move(joint_pos[1], 0)
+
+    # ga omlaag en leg neer ga weer omhoog
     move(0, -30)
     moveGripper(0)
     move(0, 30)
+
+    # ga terug naar band
     move(joint_pos[0], 0)
 
 if __name__ == '__main__':
+    setup()
     main()
-    # robot.CloseRPC()
+    robot.CloseRPC()
