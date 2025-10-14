@@ -95,7 +95,7 @@ def main():
     move(0, 300, 1)
 
     # ga terug naar band
-    move(joint_pos[0], 0)
+    move(joint_pos[0], 0, 0)
 
 if __name__ == '__main__':
     setup()
