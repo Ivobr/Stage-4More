@@ -95,20 +95,6 @@ def main():
     move(0, 300, 1)
 
     # ga terug naar band
-    move(joint_pos[0], 0, 0)
-    move(0, -30)
-    moveGripper(78)
-    move(0, 30)
-
-    # ga naar drop punt
-    move(joint_pos[1], 0)
-
-    # ga omlaag en leg neer ga weer omhoog
-    move(0, -30)
-    moveGripper(0)
-    move(0, 30)
-
-    # ga terug naar band
     move(joint_pos[0], 0)
 
 if __name__ == '__main__':
