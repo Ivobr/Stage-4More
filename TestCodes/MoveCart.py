@@ -1,7 +1,7 @@
 from fairino import Robot
 import time
 
-robot = Robot.RPC('192.168.58.2')
+robot = Robot.RPC('192.168.178.23')
 robot.ActGripper(2,0)
 time.sleep(1)
 robot.ActGripper(2, 1)

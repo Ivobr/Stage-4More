@@ -1,7 +1,7 @@
 from fairino import Robot
 import time
 
-robot = Robot.RPC('192.168.58.2')
+robot = Robot.RPC('192.168.178.23')
 robot.ActGripper(2,0)
 time.sleep(1)
 robot.ActGripper(2, 1)
@@ -21,7 +21,7 @@ joint_pos = [
 vel = acc = ovl = 100
 tool = user = 0
 blendT = -1.0
-robot.SetSpeed(100)
+robot.SetSpeed(50)
 
 # Open gripper
 robot.MoveGripper(2, 0, 100, 8, 10000, 0, 0, 0, 0, 0)
@@ -58,5 +58,5 @@ rtn = robot.MoveJ(joint_pos=joint_pos[3], tool=tool, blendT=blendT, vel=vel, use
 rtn = robot.MoveJ(joint_pos=joint_pos[2], tool=tool, blendT=blendT, vel=vel, user=user)
 rtn = robot.MoveJ(joint_pos=joint_pos[0], tool=tool, blendT=blendT, vel=vel, user=user)
 rtn = robot.MoveGripper(2, 0, 100, 8, 10000, 0, 0, 0, 0, 0)
-rtn = robot.MoveJ(joint_pos=joint_pos[2], tool=tool, blendT=blendT, vel=vel, user=user)
+# rtn = robot.MoveJ(joint_pos=joint_pos[2], tool=tool, blendT=blendT, vel=vel, user=user)
 print(rtn)
