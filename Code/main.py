@@ -5,7 +5,6 @@ state = False
 joint_pos = [[6.021, -111.91, -95.496, -63.832, 90, -127.14], # Pick up point + 30cm
              [-87.29,-86.502, -100.31,-83.686,90,-132.205] # Drop point + 30 cm
 ]
-
 # declaratie.
 offset_pos = [0] * 6
 epos = [0] * 4
@@ -22,6 +21,7 @@ config = 1
 # set up main for test plan setup
 robot = Robot.RPC('192.168.178.23')
 def setup():
+
 
     # zet safety instellingen zodat bij contact de arm stopt
     rtn = robot.SetAnticollision(mode, secure, config)
@@ -63,18 +63,21 @@ def move(moveTo, dif, Cart):
         print(pos)
         time.sleep(2)
         rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, blendT=blendT, tool=tool)
+
         print("MoveCart: ", rtn)
     rtn = robot.GetActualTCPPose()
     print("moved", rtn)
 
 def main():
     moveGripper(0, 100)
+
     while state == False:
         inputsensor()
 
     # ga naar band als die daar niet al is en open grijper
     move(joint_pos[0], 0, 0)
     moveGripper(0, 100)
+
 
     # zet moveTo als 0 om de lineare bewiging te gebruiken
 
@@ -93,6 +96,20 @@ def main():
 
     # ga terug naar band
     move(joint_pos[0], 0, 0)
+    move(0, -30)
+    moveGripper(78)
+    move(0, 30)
+
+    # ga naar drop punt
+    move(joint_pos[1], 0)
+
+    # ga omlaag en leg neer ga weer omhoog
+    move(0, -30)
+    moveGripper(0)
+    move(0, 30)
+
+    # ga terug naar band
+    move(joint_pos[0], 0)
 
 if __name__ == '__main__':
     setup()
