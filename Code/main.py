@@ -82,17 +82,17 @@ def main():
     # zet moveTo als 0 om de lineare bewiging te gebruiken
 
     # Ga omlaag en pak object en ga weer omhoog
-    move(0, -300, 1)
+    move(0, -290, 1)
     moveGripper(100, 100)
-    move(0, 300, 1)
+    move(0, 290, 1)
 
     # ga naar drop punt
     move(joint_pos[1], 0, 0)
 
     # ga omlaag en leg neer ga weer omhoog
-    move(0, -300, 1)
+    move(0, -290, 1)
     moveGripper(0, 100)
-    move(0, 300, 1)
+    move(0, 290, 1)
 
     # ga terug naar band
     move(joint_pos[0], 0, 0)
