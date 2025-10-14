@@ -2,8 +2,8 @@ from fairino import Robot
 import time
 
 state = False
-joint_pos = [[9.724, -112.39, -94.249, -63.036, 90, -122.14], # Pick up point + 30cm
-             [-87.29,-86.502, -101.31,-81.686,91.851,-137.205] # Drop point + 30 cm
+joint_pos = [[6.021, -111.91, -95.496, -63.832, 90, -127.14], # Pick up point + 30cm
+             [-87.29,-86.502, -100.31,-83.686,90,-132.205] # Drop point + 30 cm
 ]
 
 # declaratie.
@@ -37,27 +37,26 @@ def setup():
     robot.ActGripper(2,1)
     time.sleep(1)
 
-
-
-
 def inputsensor():
     global state
     rtn, state = robot.GetDI(1) # juiste pin invullen
     if state:
         state = True
+        print("Input: ", state)
+        robot.SetDO(0,1)
 
 def moveGripper(pos, force):
     rtn = robot.MoveGripper(2, pos, 100, force, 10000, 0, 0, 0, 0, 0)
     print("Moving gripper: ", rtn)
     time.sleep(1)
 
-def move(moveTo, dif):
-    if moveTo != 0:
+def move(moveTo, dif, Cart):
+    if Cart == 0:
         print("Moving to")
         print(moveTo)
         rtn = robot.MoveJ(joint_pos=moveTo, tool=tool, vel=vel, user=user, blendT=blendT)
         print("MoveJ: ", rtn)
-    elif moveTo == 0:
+    elif Cart == 1:
         print("Changing z-axis by: ", dif)
         rtn, pos = robot.GetActualTCPPose()
         pos[2] = pos[2] + dif
@@ -74,34 +73,31 @@ def main():
         inputsensor()
 
     # ga naar band als die daar niet al is en open grijper
-    move(joint_pos[0], 0)
+    move(joint_pos[0], 0, 0)
     moveGripper(0, 100)
-    time.sleep(1)
 
     # zet moveTo als 0 om de lineare bewiging te gebruiken
 
     # Ga omlaag en pak object en ga weer omhoog
-    move(0, -300)
+    move(0, -300, 1)
     moveGripper(100, 100)
-    move(0, 300)
-    time.sleep(1)
+    move(0, 300, 1)
 
     # ga naar drop punt
-    move(joint_pos[1], 0)
-    time.sleep(1)
+    move(joint_pos[1], 0, 0)
 
     # ga omlaag en leg neer ga weer omhoog
-    move(0, -300)
+    move(0, -300, 1)
     moveGripper(0, 100)
-    move(0, 300)
-    time.sleep(1)
+    move(0, 300, 1)
 
     # ga terug naar band
-    move(joint_pos[0], 0)
+    move(joint_pos[0], 0, 0)
 
 if __name__ == '__main__':
     setup()
     main()
     time.sleep(3)
+    robot.SetDO(0,0)
     robot.ResetAllError()
     robot.CloseRPC()
