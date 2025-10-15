@@ -7,11 +7,8 @@ joint_pos = [[9.724, -112.39, -94.249, -63.036, 90, -122.14], # Pick up point + 
 ]
 
 # declaratie.
-offset_pos = [0] * 6
-epos = [0] * 4
 tool = user = 0
-vel = acc = ovl = 100.0
-blendT = -1.0
+vel = 100.0
 flag = 0
 
 # set up main for test plan setup
@@ -33,20 +30,20 @@ def inputsensor():
     if state:
         state = True
 
-def moveGripper(pos):
-    rtn = robot.MoveGripper(2, pos, 100, 8, 10000, 0, 0, 0, 0, 0)
+def moveGripper(pos, force):
+    rtn = robot.MoveGripper(2, pos, 100, force, 10000, 0, 0, 0, 0, 0)
     print("Moving gripper: ", rtn)
 
-def move(moveTo, dif):
+def move(moveTo, dif, Cart):
     print("Moving to")
     print(moveTo)
-    if moveTo != 0:
-        rtn = robot.MoveJ(joint_pos=moveTo, tool=tool, vel=vel, user=user, blendT=blendT)
+    if Cart == 0:
+        rtn = robot.MoveJ(joint_pos=moveTo, tool=tool, vel=vel, user=user)
         print("MoveJ: ", rtn)
-    elif moveTo == 0:
+    elif Cart == 1:
         rtn, pos = robot.GetActualTCPPose()
         pos[2] = pos[2] + dif
-        rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, blendT=blendT)
+        rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user)
         print("MoveCart: ", rtn)
     rtn = robot.GetActualTCPPose()
     print("moved", rtn)
@@ -57,26 +54,26 @@ def main():
         inputsensor()
 
     # ga naar band als die daar niet al is en open grijper
-    move(joint_pos[0], 0)
+    move(joint_pos[0], 0, 0)
     moveGripper(0)
 
     # zet moveTo als 0 om de lineare bewiging te gebruiken
 
     # Ga omlaag en pak object en ga weer omhoog
-    move(0, -30)
-    moveGripper(78)
-    move(0, 30)
+    move(0, -300, 1)
+    moveGripper(100, 100)
+    move(0, 300, 1)
 
     # ga naar drop punt
-    move(joint_pos[1], 0)
+    move(joint_pos[1], 0, 0)
 
     # ga omlaag en leg neer ga weer omhoog
-    move(0, -30)
-    moveGripper(0)
-    move(0, 30)
+    move(0, -300, 1)
+    moveGripper(0, 100)
+    move(0, 300, 1)
 
     # ga terug naar band
-    move(joint_pos[0], 0)
+    move(joint_pos[0], 0, 0)
 
 if __name__ == '__main__':
     setup()
