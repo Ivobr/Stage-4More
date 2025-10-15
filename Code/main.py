@@ -2,8 +2,8 @@ from fairino import Robot
 import time
 
 state = False
-joint_pos = [[9.724, -112.39, -94.249, -63.036, 90, -122.14], # Pick up point + 30cm
-             [-87.29,-86.502, -101.31,-81.686,91.851,-137.205] # Drop point + 30 cm
+joint_pos = [[6.021, -111.91, -95.496, -63.832, 90, -127.14], # Pick up point + 30cm
+             [-87.29,-86.502, -100.31,-83.686,90,-132.205] # Drop point + 30 cm
 ]
 
 # declaratie.
@@ -11,9 +11,22 @@ tool = user = 0
 vel = 100.0
 flag = 0
 
+# Safety settings
+secure = [4.0,4.0,4.0,4.0,4.0,4.0]
+mode = 0
+config = 1
+
 # set up main for test plan setup
-robot = Robot.RPC('192.168.52.2')
+robot = Robot.RPC('192.168.178.23')
 def setup():
+
+     # zet safety instellingen zodat bij contact de arm stopt
+    rtn = robot.SetAnticollision(mode, secure, config)
+    print(rtn)
+
+    rtn = robot.SetCollisionStrategy(3, 2000, 100, 250)
+    print(rtn)
+
     # Reset gripper om er zeker van te zijn dat die werkt
     # Zorg dat niks tussen de vingers zit het 0 en 100 punt wordt bepaald
     robot.ActGripper(2,0) # verander 2 naar aangesloten index
@@ -26,7 +39,7 @@ def setup():
 
 def inputsensor():
     global state
-    rtn, state = robot.GetDI(0) # juiste pin invullen
+    rtn, state = robot.GetDI(1) # juiste pin invullen
     if state:
         state = True
 
@@ -43,19 +56,19 @@ def move(moveTo, dif, Cart):
     elif Cart == 1:
         rtn, pos = robot.GetActualTCPPose()
         pos[2] = pos[2] + dif
-        rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user)
+        rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
         print("MoveCart: ", rtn)
     rtn = robot.GetActualTCPPose()
     print("moved", rtn)
 
 def main():
-    moveGripper(0)
+    moveGripper(0, 100)
     while state == False:
         inputsensor()
 
     # ga naar band als die daar niet al is en open grijper
     move(joint_pos[0], 0, 0)
-    moveGripper(0)
+    moveGripper(0, 100)
 
     # zet moveTo als 0 om de lineare bewiging te gebruiken
 
@@ -78,4 +91,6 @@ def main():
 if __name__ == '__main__':
     setup()
     main()
+    time.sleep(1)
+    robot.ResetAllError()
     robot.CloseRPC()
