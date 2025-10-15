@@ -6,11 +6,8 @@ joint_pos = [[6.021, -111.91, -95.496, -63.832, 90, -127.14], # Pick up point + 
              [-87.29,-86.502, -100.31,-83.686,90,-132.205] # Drop point + 30 cm
 ]
 # declaratie.
-offset_pos = [0] * 6
-epos = [0] * 4
 tool = user = 0
-vel = acc = ovl = 100.0
-blendT = -1.0
+vel = 100.0
 flag = 0
 
 # Safety settings
@@ -45,6 +42,8 @@ def inputsensor():
         print("Input: ", state)
         robot.SetDO(0,1)
 
+def moveGripper(pos, force):
+    rtn = robot.MoveGripper(2, pos, 100, force, 10000, 0, 0, 0, 0, 0)
 def moveGripper(pos, force):
     rtn = robot.MoveGripper(2, pos, 100, force, 10000, 0, 0, 0, 0, 0)
     print("Moving gripper: ", rtn)
@@ -88,6 +87,7 @@ def main():
 
     # ga naar drop punt
     move(joint_pos[1], 0, 0)
+    move(joint_pos[1], 0, 0)
 
     # ga omlaag en leg neer ga weer omhoog
     move(0, -290, 1)
@@ -95,6 +95,7 @@ def main():
     move(0, 290, 1)
 
     # ga terug naar band
+    move(joint_pos[0], 0, 0)
     move(joint_pos[0], 0, 0)
 
 if __name__ == '__main__':
