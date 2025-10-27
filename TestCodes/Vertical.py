@@ -14,7 +14,7 @@ robot.SetAnticollision(0, level=level, config=1)
 robot.SetCollisionStrategy(3)
 
 
-joint_pos = [[6.021, -111.91, -95.496, -63.832, 90, -127.14], # Pick up point + 30cm
+joint_pos = [[11.020, -99.623, -109.587, -63.589, 90, -127], # Pick up point + 30cm
              [-87.29,-86.502, -100.31,-31.686, 90, -45.205] # Drop point + 30 cm
 ]
 
@@ -30,7 +30,7 @@ rtn = robot.MoveJ(joint_pos=joint_pos[0], tool=tool, user=user, vel=vel)
 robot.MoveGripper(2, 0, 100, 100, 10000, 0, 0, 0, 0, 0)
 
 rtn, pos = robot.GetActualTCPPose()
-pos[2] = pos[2] - 295
+pos[2] = pos[2] - 300
 
 rtn = robot.MoveCart(pos, tool, user, vel)
 print(rtn)
