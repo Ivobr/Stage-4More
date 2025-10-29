@@ -45,10 +45,8 @@ def getA(x,y):
 
 def getR(x, y):
     global r
-    x *= x
-    y *= y
-    r2 = x + y
-    r = math.sqrt(r2)
+    r = math.sqrt(x**2 + y**2)
+    return r
 
 def rIncrement(r, a):
     a = math.radians(a)
@@ -112,16 +110,9 @@ def moveCart(axis, value):
                     pos[1] = calcPoint(pos[0], r)
                 rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
                 print(rtn, pos)
-        #*
-        # TO DO
-        # * get r
-        #   increse r
-        # * get a
-        #   send both to function
-        #   *#
+
         case 1:
             rtn, pos = robot.GetActualTCPPose()
-            rtn, jPos = robot.GetActualJointPosDegree()
             getR(pos[0], pos[1])
             a = getA(pos[0], pos[1])
             if value == 1:
@@ -141,8 +132,8 @@ def moveCart(axis, value):
                 rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
                 print(rtn, pos)
             elif value == 0:
-                getR(pos[0], pos[1])
-                a = jPos[0]
+                r = getR(pos[0], pos[1])
+                a = getA(pos[0], pos[1])
                 if BigMove:
                     r -= BigMovement
                     x, y = rIncrement(r, a)
