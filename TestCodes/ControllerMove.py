@@ -37,12 +37,24 @@ print(rtn)
 joystick = pygame.joystick.Joystick(0)
 joystick.init()
 
+def getA(x,y):
+    a = math.atan(y/x)
+    angle = math.degrees(a)
+    return angle
+
+
 def getR(x, y):
     global r
     x *= x
     y *= y
     r2 = x + y
     r = math.sqrt(r2)
+
+def rIncrement(r, a):
+    a = math.radians(a)
+    x = r * math.cos(a)
+    y = r * math.sin(a)
+    return x, y
 
 def calcPoint(x, r):
     global takeNeg
@@ -70,6 +82,7 @@ def calcPoint(x, r):
 
 
 def moveCart(axis, value):
+    global r
     match axis:
         case 0:
             rtn, pos = robot.GetActualTCPPose()
@@ -99,20 +112,47 @@ def moveCart(axis, value):
                     pos[1] = calcPoint(pos[0], r)
                 rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
                 print(rtn, pos)
+        #*
+        # TO DO
+        # * get r
+        #   increse r
+        # * get a
+        #   send both to function
+        #   *#
         case 1:
             rtn, pos = robot.GetActualTCPPose()
+            rtn, jPos = robot.GetActualJointPosDegree()
+            getR(pos[0], pos[1])
+            a = getA(pos[0], pos[1])
             if value == 1:
+
                 if BigMove:
-                    pos[1] += BigMovement
+                    r += BigMovement
+                    x,y = rIncrement(r, a)
+                    print(x, y)
+                    pos[0] = x
+                    pos[1] = y
                 else:
-                    pos[1] += SmallMovement
+                    r += SmallMovement
+                    x, y = rIncrement(r, a)
+                    print(x, y)
+                    pos[0] = x
+                    pos[1] = y
                 rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
                 print(rtn, pos)
             elif value == 0:
+                getR(pos[0], pos[1])
+                a = jPos[0]
                 if BigMove:
-                    pos[1] -= BigMovement
+                    r -= BigMovement
+                    x, y = rIncrement(r, a)
+                    pos[0] = x
+                    pos[1] = y
                 else:
-                    pos[1] -= SmallMovement
+                    r -= SmallMovement
+                    x, y = rIncrement(r, a)
+                    pos[0] = x
+                    pos[1] = y
                 rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
                 print(rtn, pos)
         case 4:
@@ -191,8 +231,8 @@ def moveJ(axis, value):
 
 
 
-# rtn, pos = robot.GetActualTCPPose()
-# getR(pos[0], pos[1])
+rtn, pos = robot.GetActualTCPPose()
+getR(pos[0], pos[1])
 # lees controller input
 running = True
 while running:
@@ -253,7 +293,8 @@ while running:
                     robot.MoveGripper(2, 100, 100, 100, 10000,0,0,0,0, 0)
                 case 1:
                     robot.MoveGripper(2, 0, 100, 100, 10000, 0, 0, 0, 0, 0)
-
+                case 15:
+                    r = 425
 
 
 
