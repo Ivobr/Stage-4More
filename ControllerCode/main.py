@@ -1,8 +1,13 @@
+import cmath
+
 import pygame
 
 # Initialize Pygame and the joystick module
 pygame.init()
 pygame.joystick.init()
+
+
+r = 425
 
 # Check for joysticks
 if pygame.joystick.get_count() == 0:
@@ -15,6 +20,8 @@ joystick.init()
 
 print(f"Joystick name: {joystick.get_name()}")
 print(f"Number of axes: {joystick.get_numaxes()}")
+
+
 
 # Main loop
 running = True

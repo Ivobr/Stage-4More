@@ -1,6 +1,9 @@
+from numpy.f2py.auxfuncs import throw_error
+
 from fairino import Robot
 import pygame
 import time
+import math
 
 vel = 100
 user = 0
@@ -14,6 +17,11 @@ SmallMovement = 1
 
 BigMovementA = 5
 SmallMovementA = 0.5
+
+r = 425
+
+takeNeg = False
+yNeg = False
 
 
 pygame.init()
@@ -29,6 +37,38 @@ print(rtn)
 joystick = pygame.joystick.Joystick(0)
 joystick.init()
 
+def getR(x, y):
+    global r
+    x *= x
+    y *= y
+    r2 = x + y
+    r = math.sqrt(r2)
+
+def calcPoint(x, r):
+    global takeNeg
+    global yNeg
+    print("takeNeg = ", takeNeg, " yNeg = ", yNeg, " x = ", x, " r = ", r)
+    # in deze functie wordt de waarden van y berekent als er een nieuwe x waarde is
+    if x > r:
+        takeNeg = not takeNeg
+        yNeg = not yNeg
+        return False
+    elif x < -r:
+        takeNeg = not takeNeg
+        yNeg = not yNeg
+        return False
+    x *= x
+    r *= r
+    y2 = r - x
+    y = math.sqrt(y2)
+    if takeNeg:
+        y = -y
+        return y
+    else:
+        return y
+
+
+
 def moveCart(axis, value):
     match axis:
         case 0:
@@ -36,15 +76,27 @@ def moveCart(axis, value):
             if value == 1:
                 if BigMove:
                     pos[0] += BigMovement
+                    calcPoint(pos[0], r)
+                    pos[1] = calcPoint(pos[0], r)
+                    if calcPoint(pos[0], r) == False:
+                        return
                 else:
                     pos[0] += SmallMovement
+                    calcPoint(pos[0], r)
+                    pos[1] = calcPoint(pos[0], r)
+                    if calcPoint(pos[0], r) == False:
+                        return
                 rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
                 print(rtn, pos)
             elif value == 0:
                 if BigMove:
                     pos[0] -= BigMovement
+                    calcPoint(pos[0], r)
+                    pos[1] = calcPoint(pos[0], r)
                 else:
                     pos[0] -= SmallMovement
+                    calcPoint(pos[0], r)
+                    pos[1] = calcPoint(pos[0], r)
                 rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
                 print(rtn, pos)
         case 1:
@@ -138,6 +190,9 @@ def moveJ(axis, value):
             robot.MoveJ(pos, vel=vel, user=user, tool=tool)
 
 
+
+# rtn, pos = robot.GetActualTCPPose()
+# getR(pos[0], pos[1])
 # lees controller input
 running = True
 while running:
@@ -153,9 +208,15 @@ while running:
         match i:
             case 0:
                 if axis_val > 0.5:
-                    moveCart(i, 1)
+                    if yNeg:
+                        moveCart(i, 0)
+                    else:
+                        moveCart(i, 1)
                 elif axis_val < -0.5:
-                    moveCart(i, 0)
+                    if yNeg:
+                        moveCart(i, 1)
+                    else:
+                        moveCart(i, 0)
             case 1:
                 if axis_val > 0.5:
                     moveCart(i, 1)
