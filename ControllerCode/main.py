@@ -30,11 +30,16 @@ while running:
     # to read sensor axis value
     for i in range(axes):
         axis_val = joystick.get_axis(i)
-        print(f"Axis {i}: {axis_val:.3f}", end=" | ")
+        # print(f"Axis {i}: {axis_val:.3f}", end=" | ")
     print()  # Newline after each frame
     for i in range(buttons):
         button_val = joystick.get_button(i)
         if button_val == 1:
+            match i:
+                case 0:
+                    print("X pressed")
+                case 1:
+                    print("O pressed")
             print(f"Button {i}: {button_val:.3f}", end=" | ")
     print()
 

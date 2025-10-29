@@ -44,8 +44,6 @@ def inputsensor():
 
 def moveGripper(pos, force):
     rtn = robot.MoveGripper(2, pos, 100, force, 10000, 0, 0, 0, 0, 0)
-def moveGripper(pos, force):
-    rtn = robot.MoveGripper(2, pos, 100, force, 10000, 0, 0, 0, 0, 0)
     print("Moving gripper: ", rtn)
     time.sleep(1)
 
@@ -53,7 +51,7 @@ def move(moveTo, dif, Cart):
     if Cart == 0:
         print("Moving to")
         print(moveTo)
-        rtn = robot.MoveJ(joint_pos=moveTo, tool=tool, vel=vel, user=user, blendT=blendT)
+        rtn = robot.MoveJ(joint_pos=moveTo, tool=tool, vel=vel, user=user)
         print("MoveJ: ", rtn)
     elif Cart == 1:
         print("Changing z-axis by: ", dif)
@@ -61,7 +59,7 @@ def move(moveTo, dif, Cart):
         pos[2] = pos[2] + dif
         print(pos)
         time.sleep(2)
-        rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, blendT=blendT, tool=tool)
+        rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
 
         print("MoveCart: ", rtn)
     rtn = robot.GetActualTCPPose()
