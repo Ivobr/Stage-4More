@@ -36,10 +36,6 @@ rtn = robot.ActGripper(2, 1)
 time.sleep(3)
 print(rtn)
 
-
-
-
-
 def moveCart(axis, direction):
     global x, y, r, a, takeNeg, xOpp
 
@@ -85,7 +81,7 @@ def moveCart(axis, direction):
             rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
         case 1:
             a = calc.getA(pos[0],pos[1])
-            r = calc.getR(pos[0, pos[1]])
+            r = calc.getR(pos[0], pos[1])
             if direction:
                 if BigMove:
                     r += BigMovement
@@ -156,7 +152,7 @@ def moveJ(axis, direction):
 
 
 def readJoystick():
-    global joystick
+    global joystick, BigMove, r
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
