@@ -4,10 +4,10 @@ import time
 import pygame
 
 
-Xas = Yas = Zas = S5 = S4 = False
+Xas = Yas = ZasUp = ZasDown = S5 = S4 = False
 
 ref = 2
-lastValX = lastValY = lastValZ = lastValS5 = lastValS4 = 0
+lastValX = lastValY = lastValZup = lastValZdown = lastValS5 = lastValS4 = 0
 
 robot = Robot.RPC('192.168.178.23')
 
@@ -15,7 +15,12 @@ pygame.init()
 pygame.joystick.init()
 joystick = pygame.joystick.Joystick(0)
 joystick.init()
+robot.ActGripper(2,1)
 
+def moveJ():
+    rtn, pos = robot.GetActualJointPosDegree()
+    pos[5] += 5
+    robot.MoveJ(pos,0,0)
 
 def JOG(nb, dir, vel, ref):
     robot.StopJOG(3)
@@ -33,11 +38,11 @@ def height(nb, dir, axis_val):
     robot.StopJOG(3)
     time.sleep(0.1)
 
-    print("Two number nine's")
+    # print("Two number nine's")
     vel = (axis_val*100)/4 # / = 2 * groter dan bij normale
-    print(vel)
+    # print(vel)
     rtn = robot.StartJOG(ref=2, nb=nb, dir=dir, max_dis=10000, vel=vel)
-    print(rtn)
+    # print(rtn)
 
 while True:
     for event in pygame.event.get():
@@ -45,6 +50,7 @@ while True:
             running = False
 
     axes = joystick.get_numaxes()
+    buttons = joystick.get_numbuttons()
     for i in range(axes):
         axis_val = joystick.get_axis(i)
         match i:
@@ -117,28 +123,45 @@ while True:
             # L2
             case 4:
                 if axis_val > -0.9:
-                    print(axis_val)
+                    print("axis before +1 = ",axis_val)
                     axis_val += 1
-                    if axis_val - lastValZ > 0.2 or axis_val - lastValZ < -0.2:
+                    print("Axis after +1 = ", axis_val)
+                    print("Last before som = ", lastValZdown)
+                    print("The if statement= ", axis_val - lastValZdown)
+                    if axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2:
                         height(3, 0, axis_val)
-                        lastValZ = axis_val
-                    Zas = True
+                        lastValZdown = axis_val
+                        print("LAst= ", lastValZdown)
+                        print("Axis= ", axis_val)
+                    ZasDown = True
                 else:
-                    Zas = False
+                    ZasDown = False
             # R2
             case 5:
                 if axis_val > -0.9:
                     axis_val += 1
-                    if axis_val - lastValZ > 0.2 or axis_val - lastValZ < -0.2:
+                    if axis_val - lastValZup > 0.2 or axis_val - lastValZup < -0.2:
                         height(3, 1, axis_val)
-                        lastValZ = axis_val
-                    Zas = True
+                        lastValZup = axis_val
+                    ZasUp = True
 
                 else:
-                    Zas = False
-        if Xas == False and Yas == False and Zas == False and S5 == False and S4 == False:
+                    ZasUp = False
+
+
+        for i in range(buttons):
+            button_val = joystick.get_button(i)
+            if button_val:
+                match i:
+                    case 0:
+                        robot.MoveGripper(2, 100, 100, 100, 10000,0,0,0,0, 0)
+                    case 1:
+                        robot.MoveGripper(2, 0, 100, 100, 10000, 0, 0, 0, 0, 0)
+
+
+        if Xas == False and Yas == False and ZasUp == False and ZasDown == False and S5 == False and S4 == False:
             robot.StopJOG(3)
-            lastValX = lastValY = lastValZ = lastValS4 = lastValS5 = 0
+            lastValX = lastValY = lastValZup = lastValZdown = lastValS4 = lastValS5 = 0
         # else:
             # print("Xas = ", Xas)
             # print("Yas = ", Yas)

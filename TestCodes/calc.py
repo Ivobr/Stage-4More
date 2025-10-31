@@ -43,3 +43,22 @@ def calcPoint(x,r, takeNeg):
         return y
 
 
+values = [0.2,0.3,0.56,0.42,99.25, 98]
+
+element = max(values)
+
+i = values.index(element)
+
+print(i)
+
+i = 0
+
+while i < 5:
+    i += 1
+    values[i] = i
+
+element = max(values)
+
+i = values.index(element)
+
+print(i)

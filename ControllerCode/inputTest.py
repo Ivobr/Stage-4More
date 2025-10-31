@@ -8,6 +8,8 @@ joystick.init()
 Xas = Yas = Zas = S5 = False
 lastValY = lastValZ = lastValX = lastValS5 = 0
 
+values = [0,0,0,0,0,0]
+
 
 def calc(axis_val):
     vel = (axis_val * 100)/2
