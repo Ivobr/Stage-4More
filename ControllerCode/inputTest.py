@@ -25,14 +25,20 @@ while True:
     # time.sleep(1)
     for i in range(axes):
         axis_val = joystick.get_axis(i)
+
+        if i >= 4:
+            axis_val += 1
+
         if axis_val < 0:
             TrueValues[i] = axis_val
             axis_val = abs(axis_val)
         else:
             TrueValues[i] = axis_val
 
-        if i < 4:
-            values[i] = axis_val
+
+        values[i] = axis_val
+
+        # print(values)
 
 
 
@@ -101,25 +107,19 @@ while True:
                 S4 = False
         # L2
         case 4:
-            if axis_val > -0.9:
-                print("axis before +1 = ", axis_val)
-                axis_val += 1
-                print("Axis after +1 = ", axis_val)
-                print("Last before som = ", lastValZdown)
-                print("The if statement= ", axis_val - lastValZdown)
+            if axis_val > 0.1:
                 if axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2:
                     lastValZdown = axis_val
-                    print("LAst= ", lastValZdown)
-                    print("Axis= ", axis_val)
+                    print("L2")
                 ZasDown = True
             else:
                 ZasDown = False
         # R2
         case 5:
-            if axis_val > -0.9:
-                axis_val += 1
+            if axis_val > 0.1:
                 if axis_val - lastValZup > 0.2 or axis_val - lastValZup < -0.2:
                     lastValZup = axis_val
+                    print("R2")
                 ZasUp = True
 
             else:
