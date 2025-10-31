@@ -9,6 +9,8 @@ joystick.init()
 Xas = Yas = ZasUp = ZasDown = S5 = S4 = False
 lastValX = lastValY = lastValZup = lastValZdown = lastValS5 = lastValS4 = 0
 
+highest = 10
+
 values = [0,0,0,0,0,0]
 TrueValues = [0,0,0,0,0,0]
 
@@ -44,6 +46,9 @@ while True:
 
     element = max(values)
     i = values.index(element)
+    if i is not highest:
+        print("change highest")
+        highest = i
     axis_val = TrueValues[i]
     match i:
         case 0:

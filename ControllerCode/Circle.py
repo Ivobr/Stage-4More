@@ -80,3 +80,6 @@ def call(x, r):
 # print(y)
 
 call(x,r)
+
+
+print(max([26,32,16,45]))
