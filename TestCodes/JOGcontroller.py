@@ -195,6 +195,7 @@ while True:
                 case 15:
                     gripper = not gripper
                     print(gripper)
+                    robot.SetDO(0,gripper)
                     time.sleep(1)
 
         if Xas == False and Yas == False and ZasUp == False and ZasDown == False and S5 == False and S4 == False:
