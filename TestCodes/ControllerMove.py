@@ -1,306 +1,55 @@
-from numpy.f2py.auxfuncs import throw_error
+#*
+# Testing the blendT function to get a smooth movement while sending just cords
+# *#
 
 from fairino import Robot
-import pygame
 import time
-import math
-
-vel = 100
-user = 0
-tool = 0
-
-input = False
-BigMove = False
-
-BigMovement = 50
-SmallMovement = 1
-
-BigMovementA = 5
-SmallMovementA = 0.5
-
-r = 425
-
-takeNeg = False
-yNeg = False
-
-
-pygame.init()
-pygame.joystick.init()
 
 robot = Robot.RPC('192.168.178.23')
+blendT=500.0
+sleep = 0.0
 
-robot.ActGripper(2,0)
-time.sleep(1)
-rtn = robot.ActGripper(2,1)
-time.sleep(3)
+start_point = [[625, -600.945, -0.246, -179, -0.404, 41.868],
+               [625, 334.438, -0.246, -179, -0.404, 41.868],
+               [225, 534.438, -0.246, -179, -0.404, 41.868]]
+
+rtn = robot.MoveCart(desc_pos=start_point[0], tool=0, user=0, vel=50, blendT=blendT)
 print(rtn)
-joystick = pygame.joystick.Joystick(0)
-joystick.init()
+# time.sleep(sleep)
+# rtn = robot.MoveCart(desc_pos=start_point[1], tool=0, user=0, vel=75, blendT=blendT)
+# print(rtn)
+# time.sleep(sleep)
+# rtn = robot.MoveCart(desc_pos=start_point[2], tool=0, user=0, vel=100, blendT=blendT)
+# print(rtn)
+#
+#
+# rtn = robot.MoveCart(desc_pos=start_point[2], tool=0, user=0, vel=50, blendT=blendT)
+# print(rtn)
+# time.sleep(sleep)
+# rtn = robot.MoveCart(desc_pos=start_point[1], tool=0, user=0, vel=75, blendT=blendT)
+# print(rtn)
+# time.sleep(sleep)
+# rtn = robot.MoveCart(desc_pos=start_point[0], tool=0, user=0, vel=100, blendT=blendT)
+# print(rtn)
+i = 0
+time.sleep(5)
 
-def getA(x,y):
-    a = math.atan(y/x)
-    angle = math.degrees(a)
-    return angle
-
-
-def getR(x, y):
-    global r
-    r = math.sqrt(x**2 + y**2)
-    return r
-
-def rIncrement(r, a):
-    a = math.radians(a)
-    x = r * math.cos(a)
-    y = r * math.sin(a)
-    return x, y
-
-def calcPoint(x, r):
-    global takeNeg
-    global yNeg
-    print("takeNeg = ", takeNeg, " yNeg = ", yNeg, " x = ", x, " r = ", r)
-    # in deze functie wordt de waarden van y berekent als er een nieuwe x waarde is
-    if x > r:
-        takeNeg = not takeNeg
-        yNeg = not yNeg
-        return False
-    elif x < -r:
-        takeNeg = not takeNeg
-        yNeg = not yNeg
-        return False
-    x *= x
-    r *= r
-    y2 = r - x
-    y = math.sqrt(y2)
-    if takeNeg:
-        y = -y
-        return y
-    else:
-        return y
-
-
-
-def moveCart(axis, value):
-    global r
-    match axis:
-        case 0:
-            rtn, pos = robot.GetActualTCPPose()
-            if value == 1:
-                if BigMove:
-                    pos[0] += BigMovement
-                    calcPoint(pos[0], r)
-                    pos[1] = calcPoint(pos[0], r)
-                    if calcPoint(pos[0], r) == False:
-                        return
-                else:
-                    pos[0] += SmallMovement
-                    calcPoint(pos[0], r)
-                    pos[1] = calcPoint(pos[0], r)
-                    if calcPoint(pos[0], r) == False:
-                        return
-                rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
-                print(rtn, pos)
-            elif value == 0:
-                if BigMove:
-                    pos[0] -= BigMovement
-                    calcPoint(pos[0], r)
-                    pos[1] = calcPoint(pos[0], r)
-                else:
-                    pos[0] -= SmallMovement
-                    calcPoint(pos[0], r)
-                    pos[1] = calcPoint(pos[0], r)
-                rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
-                print(rtn, pos)
-
-        case 1:
-            rtn, pos = robot.GetActualTCPPose()
-            getR(pos[0], pos[1])
-            a = getA(pos[0], pos[1])
-            if value == 1:
-
-                if BigMove:
-                    r += BigMovement
-                    x,y = rIncrement(r, a)
-                    print(x, y)
-                    pos[0] = x
-                    pos[1] = y
-                else:
-                    r += SmallMovement
-                    x, y = rIncrement(r, a)
-                    print(x, y)
-                    pos[0] = x
-                    pos[1] = y
-                rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
-                print(rtn, pos)
-            elif value == 0:
-                r = getR(pos[0], pos[1])
-                a = getA(pos[0], pos[1])
-                if BigMove:
-                    r -= BigMovement
-                    x, y = rIncrement(r, a)
-                    pos[0] = x
-                    pos[1] = y
-                else:
-                    r -= SmallMovement
-                    x, y = rIncrement(r, a)
-                    pos[0] = x
-                    pos[1] = y
-                rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
-                print(rtn, pos)
-        case 4:
-            rtn, pos = robot.GetActualTCPPose()
-            if BigMove:
-                pos[2] -= BigMovement
-            else:
-                pos[2] -= SmallMovement
-            rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
-        case 5:
-            rtn, pos = robot.GetActualTCPPose()
-            if BigMove:
-                pos[2] += BigMovement
-            else:
-                pos[2] += SmallMovement
-            rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
-
-
-
-    print("Moving cart...")
-
-
-    #functie om de kop van de arm aan te sturen
-def moveJ(axis, value):
-    match axis:
-        case 2:
-            #stuur Joint 5 aan
-            print(value)
-            if value == 1:
-                rtn, pos = robot.GetActualJointPosDegree()
-                if BigMove:
-                    pos[4] += BigMovementA
-                else:
-                    pos[4] += SmallMovementA
-                robot.MoveJ(pos, vel=vel, user=user, tool=tool)
-            elif value == 0:
-                rtn, pos = robot.GetActualJointPosDegree()
-                if BigMove:
-                    pos[4] -= BigMovementA
-                else:
-                    pos[4] -= SmallMovementA
-                robot.MoveJ(pos, vel=vel, user=user, tool=tool)
-        case 3:
-            # stuur Joint 4 aan
-            print(value)
-            if value == 1:
-                rtn, pos = robot.GetActualJointPosDegree()
-                if BigMove:
-                    pos[3] += BigMovementA
-                else:
-                    pos[3] += SmallMovementA
-                robot.MoveJ(pos, vel=vel, user=user, tool=tool)
-            elif value == 0:
-                rtn, pos = robot.GetActualJointPosDegree()
-                if BigMove:
-                    pos[3] -= BigMovementA
-                else:
-                    pos[3] -= SmallMovementA
-                robot.MoveJ(pos, vel=vel, user=user, tool=tool)
-
-
-        case 13:
-            rtn, pos = robot.GetActualJointPosDegree()
-            if BigMove:
-                pos[5] -= BigMovementA
-            else:
-                pos[5] -= SmallMovementA
-            robot.MoveJ(pos, vel=vel, user=user, tool=tool)
-        case 14:
-            rtn, pos = robot.GetActualJointPosDegree()
-            if BigMove:
-                pos[5] += BigMovementA
-            else:
-                pos[5] += SmallMovementA
-            robot.MoveJ(pos, vel=vel, user=user, tool=tool)
-
-
-
+# niet telkens een nieuw pos opvragen maar op eentje doorrekenen
 rtn, pos = robot.GetActualTCPPose()
-getR(pos[0], pos[1])
-# lees controller input
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+vel = 50
 
-    axes = joystick.get_numaxes()
-    buttons = joystick.get_numbuttons()
-
-    for i in range(axes):
-        axis_val = joystick.get_axis(i)
-        match i:
-            case 0:
-                if axis_val > 0.5:
-                    if yNeg:
-                        moveCart(i, 0)
-                    else:
-                        moveCart(i, 1)
-                elif axis_val < -0.5:
-                    if yNeg:
-                        moveCart(i, 1)
-                    else:
-                        moveCart(i, 0)
-            case 1:
-                if axis_val > 0.5:
-                    moveCart(i, 1)
-                elif axis_val < -0.5:
-                    moveCart(i, 0)
-            case 2:
-                if axis_val > 0.5:
-                    moveJ(i, 1)
-                elif axis_val < -0.5:
-                    moveJ(i, 0)
-            case 3:
-                if axis_val > 0.5:
-                    moveJ(i,1)
-                elif axis_val < -0.5:
-                    moveJ(i,0)
-            # L2 = z-as omlaag
-            case 4:
-                if axis_val > -0.9:
-                    moveCart(i, 0)
-
-            # R2 = z-as omhoog
-            case 5:
-                if axis_val > -0.9:
-                    moveCart(i,0)
+#simuleert controller joystick input
+while i < 10:
+    print("Nu start")
 
 
-
-
-    for i in range(buttons):
-        button_val = joystick.get_button(i)
-        if button_val:
-            match i:
-                case 0:
-                    robot.MoveGripper(2, 100, 100, 100, 10000,0,0,0,0, 0)
-                case 1:
-                    robot.MoveGripper(2, 0, 100, 100, 10000, 0, 0, 0, 0, 0)
-                case 15:
-                    r = 425
-
-
-
-                case 9:
-                    BigMove = False
-                    print("BIG MOVE FALSE")
-                case 10:
-                    BigMove = True
-                    print("BIG MOVE TRUE")
-
-
-                case 13:
-                    moveJ(i, 0)
-                case 14:
-                    moveJ(i,0)
-    if input == True:
-        time.sleep(0.5)
-        input = False
+    #als vel berekent wordt kan deze elke keer meegegeven worden maybe
+    pos[1] += 100
+    rtn = robot.MoveCart(desc_pos=pos, tool=0, user=0, vel=vel, blendT=blendT)
+    print(rtn)
+    time.sleep(sleep)
+    i += 1
+    # if vel > 100:
+    #   vel += 5
+    print("i = ", i)
+robot.ResetAllError()

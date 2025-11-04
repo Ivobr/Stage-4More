@@ -1,4 +1,3 @@
-from TestCodes.ControllerMove import BigMovement
 from fairino import Robot
 import time
 import pygame
@@ -6,7 +5,11 @@ import calc
 
 robot = Robot.RPC('192.168.178.23')
 
-x, y, r, a = 0
+x = 0
+y = 0
+z = 0
+a = 0
+r = 0
 
 BigMove = False
 BigMovement = 50
@@ -19,7 +22,8 @@ takeNeg = False
 xOpp = False
 
 vel = 100
-user, tool = 0
+user = 0
+tool = 0
 
 joystick = 0
 
@@ -90,6 +94,7 @@ def moveCart(axis, direction):
                 x, y = calc.rIncrement(r, a)
                 pos[0] = x
                 pos[1] = y
+                print(x,y)
             else:
                 if BigMove:
                     r -= BigMovement
@@ -228,9 +233,6 @@ def readJoystick():
                     moveJ(i, 0)
                 case 14:
                     moveJ(i,0)
-    if input == True:
-        time.sleep(0.5)
-        input = False
 
 
 def main():

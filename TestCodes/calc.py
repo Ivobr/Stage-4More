@@ -23,6 +23,7 @@ def rIncrement(r,a):
     x = r * math.cos(a)
     y = r * math.sin(a)
 
+    print("rIncrement = ", x," ",y)
     return x,y
 
 def calcPoint(x,r, takeNeg):
@@ -34,6 +35,7 @@ def calcPoint(x,r, takeNeg):
     # y^2 = r^2 + x^2
     #*#
     y = math.sqrt(r**2 - x**2)
+    print("CalcPoint Y = ", y)
 
     # voor als de negative waarde van y genomen moet worden om "onder" de x-as te komen
     if takeNeg:
@@ -42,23 +44,3 @@ def calcPoint(x,r, takeNeg):
     else:
         return y
 
-
-values = [0.2,0.3,0.56,0.42,99.25, 98]
-
-element = max(values)
-
-i = values.index(element)
-
-print(i)
-
-i = 0
-
-while i < 5:
-    i += 1
-    values[i] = i
-
-element = max(values)
-
-i = values.index(element)
-
-print(i)

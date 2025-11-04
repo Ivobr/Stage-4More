@@ -1,4 +1,3 @@
-
 from fairino import Robot
 import time
 import pygame
@@ -35,7 +34,10 @@ def moveJ():
 def JOG(nb, dir, vel, ref):
     robot.StopJOG(3)
     time.sleep(0.1)
-    vel = (vel*100)/2
+    vel = (vel*100)
+    rtn = robot.GetActualTCPPose()
+    print(rtn)
+    print("Axis given: ", nb)
 
 
     print("Stoped")
@@ -49,7 +51,7 @@ def height(nb, dir, axis_val):
     time.sleep(0.1)
 
     # print("Two number nine's")
-    vel = (axis_val*100)/4 # / = 2 * groter dan bij normale
+    vel = (axis_val*100)/2 # / = 2 * groter dan bij normale
     print(vel)
     rtn = robot.StartJOG(ref=2, nb=nb, dir=dir, max_dis=10000, vel=vel)
     # print(rtn)
@@ -82,7 +84,6 @@ while True:
     element = max(values)
     if element < 0.1:
         robot.StopJOG(3)
-        print("Should have stopped here")
     i = values.index(element)
     axis_val = TrueValues[i]
 
