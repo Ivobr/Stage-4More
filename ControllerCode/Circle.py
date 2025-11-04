@@ -1,85 +1,16 @@
+from fairino import Robot
 
-import math
+r = Robot.RPC('192.168.178.23')
 
-r = 425
-x = 420
+desc_pos3 = [-487.434, 154.362, 308.576, 176.600, 0.268, -14.061]
+desc_pos1 = [-419.524, -13.000, 351.569, -178.118, 0.314, 3.833]
+tool = 0
+user = 0
 
-xOpp = False
-takeNeg = False
-
-def getR(x, y):
-    r = math.sqrt(x ** 2 + y ** 2)
-    return r
-
-def calcPoint(x,r, takeNeg):
-    # (x-h)*(x-h) + (y + k)*(y + k) = r * r
-
-    # (x*x)/r*r = -y*y
-
-    # X^2/R^2 = y^2
-
-
-
-    x *= x
-    # print(x)
-    r *= r
-    # print(r)
-    y2 = r-x
-    # print(y2)
-
-    y = math.sqrt(y2)
-    if takeNeg:
-        y = -y
-
-    print(y)
-    return y
-
-def rincrement(r, a):
-    # r = nieuwe radius
-    # hoek J1
-
-    a = math.radians(a)
-    x = r * math.cos(a)
-    y = r * math.sin(a)
-
-    return x,y
-
-
-def getA(x, y):
-    angle = y/x
-    a = math.atan(angle)
-    angles = math.degrees(a)
-    return angles
-
-
-def call(x, r):
-    global takeNeg, xOpp
-    while True:
-        if x > r:
-            takeNeg = not takeNeg
-            xOpp = not xOpp
-            break
-        calcPoint(x, r, takeNeg)
-
-        if xOpp:
-            x-= 1
-        else:
-            x +=1
-
-
-
-# a = getA(500, 200)
-# print("a: ", a)
-# r = getR(500, 200)
-# print("r: ",r)
-# r += 50
-#
-# print(rincrement(r,a))
-# x, y = rincrement(r, a)
-# print(x)
-# print(y)
-
-call(x,r)
-
-
-print(max([26,32,16,45]))
+print(r.GetSlaveHardVersion())
+print(r.GetSoftwareVersion())
+print(r.GetSDKVersion())
+print(r.GetMotionQueueLength())
+print(r.StopMotion())
+print(r.GetMotionQueueLength())
+print(r.GetSystemClock())

@@ -1,0 +1,39 @@
+<mxfile host="65bd71144e">
+    <diagram id="vdvl0e6oPoyL2Xzhdy2d" name="Page-1">
+        <mxGraphModel dx="702" dy="302" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="fWYWpi7pMn8_F0u2YC7D" name="Page-2">
+        <mxGraphModel dx="1242" dy="643" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="LeY8SMBF-A7j_dVL9ml9-5" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="LeY8SMBF-A7j_dVL9ml9-3" target="LeY8SMBF-A7j_dVL9ml9-4">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="LeY8SMBF-A7j_dVL9ml9-3" value="Start" style="html=1;dashed=0;whiteSpace=wrap;shape=mxgraph.dfd.start;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="360" y="10" width="80" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="LeY8SMBF-A7j_dVL9ml9-7" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="LeY8SMBF-A7j_dVL9ml9-4" target="LeY8SMBF-A7j_dVL9ml9-6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="LeY8SMBF-A7j_dVL9ml9-4" value="Import fairino &amp;amp; pygame" style="whiteSpace=wrap;html=1;dashed=0;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="100" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="LeY8SMBF-A7j_dVL9ml9-9" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="LeY8SMBF-A7j_dVL9ml9-6" target="LeY8SMBF-A7j_dVL9ml9-8">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="LeY8SMBF-A7j_dVL9ml9-6" value="Connect to robot" style="whiteSpace=wrap;html=1;dashed=0;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="210" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="LeY8SMBF-A7j_dVL9ml9-8" value="initialize gripper and joysticks" style="whiteSpace=wrap;html=1;dashed=0;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="330" width="120" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

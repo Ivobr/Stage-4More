@@ -10,6 +10,11 @@ y = 0
 z = 0
 a = 0
 r = 0
+Moving = False
+
+Xas = False
+Yas = False
+Zas = False
 
 BigMove = False
 BigMovement = 50
@@ -24,6 +29,9 @@ xOpp = False
 vel = 100
 user = 0
 tool = 0
+blendT = 500
+
+rtn, pos = robot.GetActualTCPPose()
 
 joystick = 0
 
@@ -41,9 +49,7 @@ time.sleep(3)
 print(rtn)
 
 def moveCart(axis, direction):
-    global x, y, r, a, takeNeg, xOpp
-
-    rtn, pos = robot.GetActualTCPPose()
+    global x, y, r, a, takeNeg, xOpp, pos
 
     # update de waarden van r en a voor als deze gewijzigt zijn
     r = calc.getR(pos[0],pos[1])
@@ -82,7 +88,7 @@ def moveCart(axis, direction):
                         pos[0] = r
                     pos[0] -= SmallMovement
                     pos[1] = calc.calcPoint(pos[0], r, takeNeg)
-            rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
+            rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool, blendT=blendT)
         case 1:
             a = calc.getA(pos[0],pos[1])
             r = calc.getR(pos[0], pos[1])
@@ -104,7 +110,7 @@ def moveCart(axis, direction):
                 pos[0] = x
                 pos[1] = y
             print(x,y)
-            rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool)
+            rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool, blendT=blendT)
 
 def moveJ(axis, direction):
     print("Empty")
@@ -157,7 +163,7 @@ def moveJ(axis, direction):
 
 
 def readJoystick():
-    global joystick, BigMove, r
+    global joystick, BigMove, r, Xas, Yas, Zas
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -173,18 +179,30 @@ def readJoystick():
                     print("Read left joystick")
                     if xOpp:
                         moveCart(i, 0)
-                    else:
+                        Xas = True
+                    elif not xOpp:
                         moveCart(i, 1)
+                        Xas = True
+                    else:
+                        Xas = False
                 elif axis_val < -0.5:
                     if xOpp:
                         moveCart(i, 1)
-                    else:
+                        Xas = True
+                    elif not xOpp:
                         moveCart(i, 0)
+                        Xas = True
+                    else:
+                        Xas = False
             case 1:
                 if axis_val > 0.5:
                     moveCart(i, 1)
+                    Yas = True
                 elif axis_val < -0.5:
                     moveCart(i, 0)
+                    Yas = True
+                else:
+                    Yas = False
             case 2:
                 if axis_val > 0.5:
                     moveJ(i, 1)
@@ -236,11 +254,13 @@ def readJoystick():
 
 
 def main():
-    global r
+    global r, Xas, Yas, Zas
     rtn, pos = robot.GetActualTCPPose()
     r = calc.getR(pos[0], pos[1])
     while True:
         readJoystick()
+        if Xas == False and Yas == False and Zas == False:
+            robot.MotionQueueClear()
 
 if __name__ == "__main__":
     main()
