@@ -15,6 +15,9 @@ Moving = False
 Xas = False
 Yas = False
 Zas = False
+as4 = False
+as5 = False
+gripper = False
 
 BigMove = False
 BigMovement = 50
@@ -29,32 +32,36 @@ xOpp = False
 vel = 100
 user = 0
 tool = 0
-blendT = 500
+blendT = 500  # experimenteer met waarde voor misschien een soepele beweging en stoppen wanneer nodig
 
 rtn, pos = robot.GetActualTCPPose()
 
 joystick = 0
 
-# initaliseer controller
-pygame.init()
-pygame.joystick.init()
-joystick = pygame.joystick.Joystick(0)
-joystick.init()
 
-# reset en activeer de grijper
-robot.ActGripper(2, 0)
-time.sleep(1)
-rtn = robot.ActGripper(2, 1)
-time.sleep(3)
-print(rtn)
+def setup():
+    global joystick
+
+    # initaliseer controller
+    pygame.init()
+    pygame.joystick.init()
+    joystick = pygame.joystick.Joystick(0)
+    joystick.init()
+
+    # reset en activeer de grijper
+    robot.ActGripper(2, 0)
+    time.sleep(1)
+    rtn = robot.ActGripper(2, 1)
+    time.sleep(3)
+    print(rtn)
+
 
 def moveCart(axis, direction):
     global x, y, r, a, takeNeg, xOpp, pos
 
     # update de waarden van r en a voor als deze gewijzigt zijn
-    r = calc.getR(pos[0],pos[1])
+    r = calc.getR(pos[0], pos[1])
     a = calc.getA(pos[0], pos[1])
-
 
     match axis:
         case 0:
@@ -65,7 +72,7 @@ def moveCart(axis, direction):
                         takeNeg = not takeNeg
                         xOpp = not xOpp
                         pos[0] = r
-                    pos [1] = calc.calcPoint(pos[0], r, takeNeg)
+                    pos[1] = calc.calcPoint(pos[0], r, takeNeg)
                 else:
                     pos[0] += SmallMovement
                     if pos[0] > r:
@@ -90,7 +97,7 @@ def moveCart(axis, direction):
                     pos[1] = calc.calcPoint(pos[0], r, takeNeg)
             rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool, blendT=blendT)
         case 1:
-            a = calc.getA(pos[0],pos[1])
+            a = calc.getA(pos[0], pos[1])
             r = calc.getR(pos[0], pos[1])
             if direction:
                 if BigMove:
@@ -100,7 +107,7 @@ def moveCart(axis, direction):
                 x, y = calc.rIncrement(r, a)
                 pos[0] = x
                 pos[1] = y
-                print(x,y)
+                print(x, y)
             else:
                 if BigMove:
                     r -= BigMovement
@@ -109,9 +116,11 @@ def moveCart(axis, direction):
                 x, y = calc.rIncrement(r, a)
                 pos[0] = x
                 pos[1] = y
-            print(x,y)
+            print(x, y)
             rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool, blendT=blendT)
 
+
+# weghalen en in moveCart zetten
 def moveJ(axis, direction):
     print("Empty")
     rtn, pos = robot.GetActualJointPosDegree()
@@ -142,6 +151,7 @@ def moveJ(axis, direction):
                     pos[3] -= SmallMovementA
             robot.MoveJ(joint_pos=pos, vel=vel, user=user, tool=tool)
 
+        # gaat weg wordt vervangen met de switch van de boolean voor as 6
         case 13:
             if BigMove:
                 pos[5] += BigMovementA
@@ -154,12 +164,9 @@ def moveJ(axis, direction):
             if BigMove:
                 pos[5] -= BigMovementA
             else:
-                pos[5] -=SmallMovementA
+                pos[5] -= SmallMovementA
             robot.MoveJ(joint_pos=pos, vel=vel, user=user, tool=tool)
             print("14")
-
-
-
 
 
 def readJoystick():
@@ -210,9 +217,9 @@ def readJoystick():
                     moveJ(i, 0)
             case 3:
                 if axis_val > 0.5:
-                    moveJ(i,1)
+                    moveJ(i, 1)
                 elif axis_val < -0.5:
-                    moveJ(i,0)
+                    moveJ(i, 0)
             # L2 = z-as omlaag
             case 4:
                 if axis_val > -0.9:
@@ -221,23 +228,18 @@ def readJoystick():
             # R2 = z-as omhoog
             case 5:
                 if axis_val > -0.9:
-                    moveCart(i,0)
-
-
-
+                    moveCart(i, 0)
 
     for i in range(buttons):
         button_val = joystick.get_button(i)
         if button_val:
             match i:
                 case 0:
-                    robot.MoveGripper(2, 100, 100, 100, 10000,0,0,0,0, 0)
+                    robot.MoveGripper(2, 100, 100, 100, 10000, 0, 0, 0, 0, 0)
                 case 1:
                     robot.MoveGripper(2, 0, 100, 100, 10000, 0, 0, 0, 0, 0)
                 case 15:
-                    r = 425
-
-
+                    r = 425  # wanneer alles soepel werkt veranderen naar wissel tussen as 5 en as 6 (grijper)
 
                 case 9:
                     BigMove = False
@@ -246,11 +248,11 @@ def readJoystick():
                     BigMove = True
                     print("BIG MOVE TRUE")
 
-
+                # gaat weg als boolean wissel tussen as 5 en 6 werkt
                 case 13:
                     moveJ(i, 0)
                 case 14:
-                    moveJ(i,0)
+                    moveJ(i, 0)
 
 
 def main():
@@ -262,5 +264,13 @@ def main():
         if Xas == False and Yas == False and Zas == False:
             robot.MotionQueueClear()
 
+
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        robot.ResetAllError()
+        robot.CloseRPC()
+    finally:
+        robot.ResetAllError()
+        robot.CloseRPC()
