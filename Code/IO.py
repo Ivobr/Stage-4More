@@ -1,39 +1,43 @@
-from fairino import Robot
 import time
+
+from fairino import Robot
+
 robot = Robot.RPC('192.168.178.23')
 # basic setup
 tool = user = 0
 blendT = -1.0
 flag = 0
 
-robot.ActGripper(2,0)
+robot.ActGripper(2, 0)
 time.sleep(1)
 robot.ActGripper(2, 1)
 time.sleep(1)
 
 cords = [
     # 375 -> -275
-    [625, 4.438, -32.046, -179, -0.404, 41.868], # pickup point
-    [-76.302, -472.35, 123.796, -179.11, -1.699, -40.09], # drop point
+    [625, 4.438, -20.646, -179, -0.404, 41.868],  # pickup point
+    [-76.302, -472.35, 131.096, -179.11, -1.699, -40.09],  # drop point
 ]
-#*
+# *
 # Aansluiting:
 # +24V -> + LED - -> DO0
 # 0V -> Button -> DI1
 # Niet aansluiten op DI0 als er al een led op DO0 zit
 print("LETS GET READY TO RUMBLE")
 
+
 def IO():
     while True:
         rtn, state = robot.GetDI(1)
         print(rtn)
         if state:
-            rtn = robot.SetDO(0,1)
+            rtn = robot.SetDO(0, 1)
             print(state)
             return 1
         else:
-            rtn = robot.SetDO(0,0)
+            rtn = robot.SetDO(0, 0)
         time.sleep(1)
+
 
 def move():
     rtn = robot.MoveGripper(2, 0, 100, 8, 10000, 0, 0, 0, 0, 0)
@@ -64,7 +68,7 @@ def move():
     cords[1][2] -= 300
     rtn = robot.MoveCart(desc_pos=cords[1], tool=tool, blendT=blendT, user=user)
     print(rtn)
-    robot.MoveGripper(2, 0, 100, 8, 10000, 0, 0, 0, 0, 0)
+    rtn = robot.MoveGripper(2, 0, 100, 50, 10000, 0, 0, 0, 0, 0)
     print(rtn)
 
     # Move 30cm above the drop point
@@ -92,4 +96,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    robot.SetDO(0,0)
+    robot.SetDO(0, 0)

@@ -1,7 +1,9 @@
-from fairino import Robot
 import time
+
 import pygame
+
 import calc
+from fairino import Robot
 
 robot = Robot.RPC('192.168.178.23')
 
@@ -23,7 +25,7 @@ BigMove = False
 BigMovement = 50
 BigMovementA = 5
 
-SmallMovement = 5
+SmallMovement = 1
 SmallMovementA = 0.5
 
 takeNeg = False
@@ -32,22 +34,20 @@ xOpp = False
 vel = 100
 user = 0
 tool = 0
-blendT = 500  # experimenteer met waarde voor misschien een soepele beweging en stoppen wanneer nodig
+blendT = 100  # experimenteer met waarde voor misschien een soepele beweging en stoppen wanneer nodig
 
 rtn, pos = robot.GetActualTCPPose()
 
 joystick = 0
 
+# initaliseer controller
+pygame.init()
+pygame.joystick.init()
+joystick = pygame.joystick.Joystick(0)
+joystick.init()
+
 
 def setup():
-    global joystick
-
-    # initaliseer controller
-    pygame.init()
-    pygame.joystick.init()
-    joystick = pygame.joystick.Joystick(0)
-    joystick.init()
-
     # reset en activeer de grijper
     robot.ActGripper(2, 0)
     time.sleep(1)
@@ -60,6 +60,7 @@ def moveCart(axis, direction):
     global x, y, r, a, takeNeg, xOpp, pos
 
     # update de waarden van r en a voor als deze gewijzigt zijn
+    # rtn, pos = robot.GetActualTCPPose()
     r = calc.getR(pos[0], pos[1])
     a = calc.getA(pos[0], pos[1])
 
@@ -96,6 +97,7 @@ def moveCart(axis, direction):
                     pos[0] -= SmallMovement
                     pos[1] = calc.calcPoint(pos[0], r, takeNeg)
             rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool, blendT=blendT)
+            print(robot.GetMotionQueueLength())
         case 1:
             a = calc.getA(pos[0], pos[1])
             r = calc.getR(pos[0], pos[1])
@@ -257,20 +259,17 @@ def readJoystick():
 
 def main():
     global r, Xas, Yas, Zas
+    print(robot.GetActualTCPPose())
     rtn, pos = robot.GetActualTCPPose()
     r = calc.getR(pos[0], pos[1])
     while True:
         readJoystick()
-        if Xas == False and Yas == False and Zas == False:
-            robot.MotionQueueClear()
+        # print("X = ", Xas, " Y = ", Yas, " Z = ", Zas)
+        # if Xas == False and Yas == False and Zas == False:
+        #     robot.StopMotion()
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        robot.ResetAllError()
-        robot.CloseRPC()
-    finally:
-        robot.ResetAllError()
-        robot.CloseRPC()
+    main()
+    robot.ResetAllError()
+    robot.CloseRPC()
