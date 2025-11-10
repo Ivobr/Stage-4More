@@ -7,12 +7,13 @@ niet helemaal afgerond maar ben ik wel begonnen met de controller backlog.
 Dit is omdat voor user story 3 (Grijper ontwerpen) er een 3D printer nodig is welke tot begin deze week (stage week
 1.10) defect was en ik deze dus niet heb kunnen afronden. Ook user story 6 is niet afgewerkt dit omdat de taken
 uitgevoerd moeten worden op een productie lijn en omdat het hortensia seizoen nu is afgelopen kan dit niet meer worden
-gedaan.\
-Voor userstory 7 moet de robot arm nog steviger worden bevestigd. Op dit moment als er iemand bij een beweging op
-de X of Y as er tussen komt te staan draait de pallet waar de arm op bevestigd is I.P.V. dat de arm stopt (Zie
-demovideo 'Safety'). Zodra de arm steviger bevestigd is zal deze user story kunnen worden afgerond.
+gedaan.
 
-[//]: # (&#40;Maybe heb ik tijd voordat de opleverset ingeleverd wordt en kan dit weg&#41;)
+User story 4 staat als afgerond gemarkeerd zonder alle taken te hebben voltooid. Dit is omdat er nu een werkende grijper
+ontwerp
+is alleen is deze niet gepotimaliseerd.
+Er worden dus ook nog testen gedaan voor het oppakken van een bloem met nieuwe versies van de grijper maar de
+acceptatiecriteria is behaald.
 
 ## changelog
 
