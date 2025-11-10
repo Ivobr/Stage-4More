@@ -16,12 +16,15 @@ ontwerpen en de flowdiagrammen.
 
 ## Testplannen en rapport
 
-In de map [Testplannen & rapport]() is het testplan te vinden voor de requirments. Ook staat het testplan voor de
+In de
+map [Testplannen & rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Testplannen%20%26%20Rapport)
+is het testplan te vinden voor de requirments. Ook staat het testplan voor de
 beweginsfuncties hierin.
 
 ## Stage verslag
 
-In de map [Stage verslag]() kan de huidige versie van mijn stage verslag/rapport gevonden worden
+In de map [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Stage%20verslag) kan de
+huidige versie van mijn stage verslag/rapport gevonden worden
 
 ## Presentatie
 

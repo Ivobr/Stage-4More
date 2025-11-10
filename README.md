@@ -20,8 +20,8 @@ documentatie gevonden worden zoals:
 
 * [Onderzoek](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Onderzoeken)
 * [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Ontwerpen)
-* [Testplannen & Rapport]()
-* [Stage verslag]()
+* [Testplannen & Rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Testplannen%20%26%20Rapport)
+* [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Stage%20verslag)
 
 ## TestCodes
 
@@ -30,7 +30,8 @@ worden welke zijn gebruikt om functies te testen maar ook implementaties van dez
 
 ## DemoVideos
 
-In de map [DemoVideos]() kunnen de demovideos gevonden worden van de verschillende codes zoals: autonome beweging, de
+In de map [DemoVideos](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/DemoVideos) kunnen de demovideos
+gevonden worden van de verschillende codes zoals: autonome beweging, de
 schokkende controller aansturing en de vloeiende aansturing via de controller.
 
 ## Changelog
