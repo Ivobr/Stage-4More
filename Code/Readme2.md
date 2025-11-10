@@ -50,43 +50,43 @@ DemoVideo setup:
 
 * ``Movegripper(index,pos,vel,force,maxtime,block,type,rotNum,rotVel,rotTorque)``
 
-``index``: locatie waar grijper is aangelosten\
-``pos``: positie 0 = open, 100 = dicht\
-``vel``: snelheid
-``force``: kracht
-``maxtime``: maximale tijd voordat er een timeout error wordt gegooid, sweet spot tot nu toe 10000\
-Rest op 0 zetten
+  ``index``: locatie waar grijper is aangelosten\
+  ``pos``: positie 0 = open, 100 = dicht\
+  ``vel``: snelheid
+  ``force``: kracht
+  ``maxtime``: maximale tijd voordat er een timeout error wordt gegooid, sweet spot tot nu toe 10000\
+  Rest op 0 zetten
 
 ## Input handling
 
-``SetDo(id, state)``
+* ``SetDo(id, state)``
 
-Zet de gekozen pin op de gewenste state\
-``Id``: Pin nummer op eerste rij aan pinnen\
-``State``: Zet pin hoog 1 of laag 0
+  Zet de gekozen pin op de gewenste state\
+  ``Id``: Pin nummer op eerste rij aan pinnen\
+  ``State``: Zet pin hoog 1 of laag 0
 
-``GetDI(id)``
+*``GetDI(id)``
 
-Lees de input waarde van pin uit\
-``Id``: Pin nummer op tweede rij aan pinnen
+    Lees de input waarde van pin uit\
+    ``Id``: Pin nummer op tweede rij aan pinnen
 
 ## Safety
 
-``SetAnticollision(mode, level, config)``
+* ``SetAnticollision(mode, level, config)``
 
-Zet collision detecie aan of uit\
-``mode``: 0 level, 1 percentage\
-``level``: array met de waarde voor elke joint om een collision aan te geven\
-``config``: update configfile 0 ja 1 nee
+  Zet collision detecie aan of uit\
+  ``mode``: 0 level, 1 percentage\
+  ``level``: array met de waarde voor elke joint om een collision aan te geven\
+  ``config``: update configfile 0 ja 1 nee
 
-``SetCollisionStrategy(strategy,safeTime,safeDistance,safeVel,safetyMargin)``
+* ``SetCollisionStrategy(strategy,safeTime,safeDistance,safeVel,safetyMargin)``
 
-Selecteer een reactie wanneer er een collision is\
-``strategy``: 0 - report error and pause, 1 - keep running, 2 - error stop, 3 - heavy moment mode, 4 - shock response
-mode, 5 - impact rebound mode\
+  Selecteer een reactie wanneer er een collision is\
+  ``strategy``: 0 - report error and pause, 1 - keep running, 2 - error stop, 3 - heavy moment mode, 4 - shock response
+  mode, 5 - impact rebound mode\
 
-**Niet verplicht**\
-``safeTime``: safe stop time default 1000 ms\
-``safeDistance``: safe stopping distance [1-150] mm, default: 100\
-``safeVel``: safe stopping speed[50-250]mm/s, default: 250\
-``safetyMargin``: safety margin [1-10], default: [10,10,10,10,10,10,10]
+  **Niet verplicht**\
+  ``safeTime``: safe stop time default 1000 ms\
+  ``safeDistance``: safe stopping distance [1-150] mm, default: 100\
+  ``safeVel``: safe stopping speed[50-250]mm/s, default: 250\
+  ``safetyMargin``: safety margin [1-10], default: [10,10,10,10,10,10,10]

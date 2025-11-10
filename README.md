@@ -20,12 +20,22 @@ documentatie gevonden worden zoals:
 
 * [Onderzoek](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Onderzoeken)
 * [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Ontwerpen)
+* [Testplannen & Rapport]()
+* [Stage verslag]()
 
-[//]: # (komt nog meer bij)
+## TestCodes
+
+In de map [TestCodes](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/TestCodes) kunnen alle codes gevonden
+worden welke zijn gebruikt om functies te testen maar ook implementaties van deze functiest te testen.
+
+## DemoVideos
+
+In de map [DemoVideos]() kunnen de demovideos gevonden worden van de verschillende codes zoals: autonome beweging, de
+schokkende controller aansturing en de vloeiende aansturing via de controller.
 
 ## Changelog
 
-| Wie          | Wanneer    | Wat             |
-|--------------|------------|-----------------|
-| Ivo Bruinsma | 6-11-2025  | Aanmaak bestand |
-| Ivo Bruinsma | 10-11-2025 | Aanmaak kop     |
+| Wie          | Wanneer    | Wat                                                                                        |
+|--------------|------------|--------------------------------------------------------------------------------------------|
+| Ivo Bruinsma | 6-11-2025  | Aanmaak bestand                                                                            |
+| Ivo Bruinsma | 10-11-2025 | Aanmaak kop TestCodes & DemoVideos & het toevoegen van de mappen testplan en stage verslag |
