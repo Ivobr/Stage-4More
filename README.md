@@ -10,11 +10,13 @@ automatiseren van het verwerken van sierbloemen.
 
 ## Code
 
-In de map [Code]()
+In de map [Code](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Code) kunnen de afgemaakte/belangrijke codes
+gevonden worden.
 
 ## Documentatie
 
-In de map [Documentatie]() kan alle gemaakte documentatie gevonden worden zoals:
+In de map [Documentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie) kan alle gemaakte
+documentatie gevonden worden zoals:
 
 * [Onderzoek](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Onderzoeken)
 * [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Ontwerpen)
@@ -23,7 +25,7 @@ In de map [Documentatie]() kan alle gemaakte documentatie gevonden worden zoals:
 
 ## Changelog
 
-| Wie          | Wanneer   | Wat             |
-|--------------|-----------|-----------------|
-| Ivo Bruinsma | 6-11-2025 | Aanmaak bestand |
-| Ivo Bruinsma |           |                 |
+| Wie          | Wanneer    | Wat             |
+|--------------|------------|-----------------|
+| Ivo Bruinsma | 6-11-2025  | Aanmaak bestand |
+| Ivo Bruinsma | 10-11-2025 | Aanmaak kop     |
