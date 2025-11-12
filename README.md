@@ -18,7 +18,7 @@ gevonden worden.
 In de map [Documentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie) kan alle gemaakte
 documentatie gevonden worden zoals:
 
-* [Onderzoek](Documentatie/Onderzoeken)
+* [Onderzoek](documentatie/Onderzoeken)
 * [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Ontwerpen)
 * [Testplannen & Rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Testplannen%20%26%20Rapport)
 * [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Stage%20verslag)
