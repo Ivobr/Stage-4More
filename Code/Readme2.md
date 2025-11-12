@@ -7,7 +7,7 @@ Welke codes voor 50%:
 * vloeiende controller
 * Misschien staat schokkende controller vloeiend maken
 
-Wat te doen voor demovideos:
+Wat te doen voor demovideo's:
 
 * loggers
 * duidelijke angle vinden/setup maken
@@ -27,7 +27,7 @@ DemoVideo setup:
 * ``MoveJ(joint_pos, tool, user, vel)``
 
   ``Cords``: De array met de punten voor het bewegen\
-  Verplaatst de arm doormiddel van meegegeven hoeken\
+  Verplaatst de arm door middel van meegegeven hoeken\
   ``Joint_pos``: Array[J1, J2, J3, J4, J5, J6] in graden. elke J[x] staat gelijk aan een as welke naar die hoek draait\
   ``Tool & user``: Geef voor standaard functies 0 mee\
   ``Vel``: Snelheid in % van de voorbepaalde `robospeed()` dus voor een robotspeed van 20 en vel = 10% zal de arm op 2%
@@ -35,7 +35,7 @@ DemoVideo setup:
 
 * ``MoveCart(decs_pos, tool, user, vel)``
 
-  Verplaatst de arm doormiddel van meegegeven coordianten\
+  Verplaatst de arm door middel van meegegeven coordinate\
   ``decs_pos``: Array[x, y, z, rx, ry, rz] in mm en graden. xy en z waardes zijn in mm en de rx, ry & rz zijn in graden\
   ``Tool & user``: Geef voor standaard functies 0 mee\
   ``Vel``: Snelheid in % van de voorbepaalde `robospeed()` dus voor een robotspeed van 20 en vel = 10% zal de arm op 2%
@@ -65,16 +65,16 @@ DemoVideo setup:
   ``Id``: Pin nummer op eerste rij aan pinnen\
   ``State``: Zet pin hoog 1 of laag 0
 
-*``GetDI(id)``
+* ``GetDI(id)``
 
-    Lees de input waarde van pin uit\
-    ``Id``: Pin nummer op tweede rij aan pinnen
+  Lees de input waarde van pin uit\
+  ``Id``: Pin nummer op tweede rij aan pinnen
 
 ## Safety
 
 * ``SetAnticollision(mode, level, config)``
 
-  Zet collision detecie aan of uit\
+  Zet collision detectie aan of uit\
   ``mode``: 0 level, 1 percentage\
   ``level``: array met de waarde voor elke joint om een collision aan te geven\
   ``config``: update configfile 0 ja 1 nee

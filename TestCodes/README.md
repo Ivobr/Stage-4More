@@ -1,6 +1,6 @@
 # TestCode
 
-In deze map kunnen alle geteste codes gevonden worden. Deze codes zijn geschreven om de bewegingfuncties te testen.\
+In deze map kunnen alle geteste codes gevonden worden. Deze codes zijn geschreven om de bewegingsfuncties te testen.\
 Maar ook voor het testen van de verschillende aanstuur mogelijkheden via de controller.  
 Alle codes welke geschreven worden om een functionaliteit te testen worden in deze map gezet.
 
@@ -12,7 +12,7 @@ Alle codes welke geschreven worden om een functionaliteit te testen worden in de
   bewegingsfunctie.
 * [Jog1.py](JOG1.py) de gebruikte code om de vloeiende versnellende beweging te maken via de controller.
 * [Controller2.py](Controller2.py) de gebruikte code om de schokkende rotatie code te krijgen.
-* [calc.py](calc.py) de gebruikte code om de nieuwe coordinaten uit te rekenen voor de [Controller2.py](Controller2.py)
+* [calc.py](calc.py) de gebruikte code om de nieuwe coordinate uit te rekenen voor de [Controller2.py](Controller2.py)
   code.
 
 ## Move
@@ -20,7 +20,7 @@ Alle codes welke geschreven worden om een functionaliteit te testen worden in de
 * ``MoveJ(joint_pos, tool, user, vel)``
 
   ``Cords``: De array met de punten voor het bewegen\
-  Verplaatst de arm doormiddel van meegegeven hoeken\
+  Verplaatst de arm door middel van meegegeven hoeken\
   ``Joint_pos``: Array[J1, J2, J3, J4, J5, J6] in graden. elke J[x] staat gelijk aan een as welke naar die hoek draait\
   ``Tool & user``: Geef voor standaard functies 0 mee\
   ``Vel``: Snelheid in % van de voorbepaalde `robospeed()` dus voor een robotspeed van 20 en vel = 10% zal de arm op 2%
@@ -28,7 +28,7 @@ Alle codes welke geschreven worden om een functionaliteit te testen worden in de
 
 * ``MoveCart(decs_pos, tool, user, vel)``
 
-  Verplaatst de arm doormiddel van meegegeven coordianten\
+  Verplaatst de arm door middel van meegegeven coordiante\
   ``decs_pos``: Array[x, y, z, rx, ry, rz] in mm en graden. xy en z waardes zijn in mm en de rx, ry & rz zijn in graden\
   ``Tool & user``: Geef voor standaard functies 0 mee\
   ``Vel``: Snelheid in % van de voorbepaalde `robospeed()` dus voor een robotspeed van 20 en vel = 10% zal de arm op 2%
@@ -67,7 +67,7 @@ Alle codes welke geschreven worden om een functionaliteit te testen worden in de
 
 * ``SetAnticollision(mode, level, config)``
 
-  Zet collision detecie aan of uit\
+  Zet collision detectie aan of uit\
   ``mode``: 0 level, 1 percentage\
   ``level``: array met de waarde voor elke joint om een collision aan te geven\
   ``config``: update configfile 0 ja 1 nee

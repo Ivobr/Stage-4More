@@ -6,42 +6,42 @@ In deze map is alle documentatie te vinden voor de 50% opleverset.
 
 In de
 map [Backlog & Planning](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Backlog%20en%20planning)
-kan de backlog en de planning van deze periode gevonden worden. Ook staat er een pdf
-bestand in welke extra context geeft aan de product backlog.
+kan de backlog en de planning van deze periode gevonden worden. Ook staat er een pdf-bestand in welke extra context
+geeft aan de product backlog.
 
 ## Onderzoek
 
-In de map [Onderzoeken](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Onderzoeken) kan het
-keuze onderzoek gevonden worden voor het kiezen van de robot arm en grijper. Ook kan het onderzoek/testplan voor de
-bewegings functies gevonden worden in deze map.
+In de map [Onderzoeken](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Onderzoeken) kan het
+keuzeonderzoek gevonden worden voor het kiezen van de robot arm en grijper. Ook kan het onderzoek/testplan voor de
+bewegingsfuncties gevonden worden in deze map.
 
 ## Ontwerpen
 
-In de map [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Ontwerpen) kunnen alle
-gemaakte ontwerpen gevonden worden zoals: Elektrische schema's, schematische
+In de map [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Ontwerpen) kunnen alle
+gemaakte ontwerpen gevonden worden zoals: Stakeholder analyse, Elektrische schema's, schematische
 ontwerpen en de flowdiagrammen.
 
 ## Presentatie
 
-In de map [Presentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Presentatie) kan de 50%
+In de map [Presentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Presentatie) kan de 50%
 powerpoint en video van de presentatie gevonden worden.
 
 ## Reflectie
 
-In de map [Reflectie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Reflectie) kan mijn
+In de map [Reflectie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Reflectie) kan mijn
 reflectie en de reflectie geschreven door mijn stage begeleider gevonden worden.
 
 ## Stage verslag
 
-In de map [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Stage%20verslag) kan de
+In de map [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Stage%20verslag) kan de
 huidige versie van mijn stage verslag/rapport gevonden worden.
 
 ## Testplannen en rapport
 
 In de
-map [Testplannen & rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Testplannen%20%26%20Rapport)
-is het testplan te vinden voor de requirments. Ook staat het testplan voor de
-beweginsfuncties hierin.
+map [Testplannen & rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Testplannen%20%26%20Rapport)
+is het testplan te vinden voor de requirements. Ook staat het testplan voor de
+bewegingsfuncties hierin.
 
 ## Changelog
 

@@ -19,21 +19,21 @@ In de map [Documentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverS
 documentatie gevonden worden zoals:
 
 * [Onderzoek](documentatie/Onderzoeken)
-* [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Ontwerpen)
-* [Testplannen & Rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Testplannen%20%26%20Rapport)
-* [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Stage%20verslag)
-* [Backlog & planning](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Backlog%20en%20planning)
-* [Presentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Presentatie)
-* [Reflectie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Reflectie)
+* [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Ontwerpen)
+* [Testplannen & Rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Testplannen%20%26%20Rapport)
+* [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Stage%20verslag)
+* [Backlog & planning](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Backlog%20en%20planning)
+* [Presentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Presentatie)
+* [Reflectie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Reflectie)
 
 ## TestCodes
 
 In de map [TestCodes](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/TestCodes) kunnen alle codes gevonden
-worden welke zijn gebruikt om functies te testen maar ook implementaties van deze functiest te testen.
+worden welke zijn gebruikt om functies te testen maar ook implementaties van deze functies te testen.
 
 ## DemoVideos
 
-In de map [DemoVideos](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/DemoVideos) kunnen de demovideos
+In de map [DemoVideos](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/DemoVideos) kunnen de demovideo's
 gevonden worden van de verschillende codes zoals: autonome beweging, de
 schokkende controller aansturing en de vloeiende aansturing via de controller.
 
