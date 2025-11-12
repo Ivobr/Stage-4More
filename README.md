@@ -15,13 +15,16 @@ gevonden worden.
 
 ## Documentatie
 
-In de map [Documentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie) kan alle gemaakte
+In de map [Documentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie) kan alle gemaakte
 documentatie gevonden worden zoals:
 
-* [Onderzoek](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Onderzoeken)
-* [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Ontwerpen)
-* [Testplannen & Rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Testplannen%20%26%20Rapport)
-* [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Stage%20verslag)
+* [Onderzoek](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Onderzoeken)
+* [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Ontwerpen)
+* [Testplannen & Rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Testplannen%20%26%20Rapport)
+* [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Stage%20verslag)
+* [Backlog & planning](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Backlog%20en%20planning)
+* [Presentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Presentatie)
+* [Reflectie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Reflectie)
 
 ## TestCodes
 
@@ -36,7 +39,34 @@ schokkende controller aansturing en de vloeiende aansturing via de controller.
 
 ## Changelog
 
-| Wie          | Wanneer    | Wat                                                                                        |
+| Wie          | Datum      | Wijziging                                                                                  |
 |--------------|------------|--------------------------------------------------------------------------------------------|
 | Ivo Bruinsma | 6-11-2025  | Aanmaak bestand                                                                            |
 | Ivo Bruinsma | 10-11-2025 | Aanmaak kop TestCodes & DemoVideos & het toevoegen van de mappen testplan en stage verslag |
+
+## Opleverset inhoud
+
+* ~~Ontwerpen~~
+* onderzoeken keuze maken over hoe en wat ik doe met experimenteel onderzoek
+* ~~demovideos~~
+* Reflectie
+    * ~~Vooruitblik op volgende 50% & terugblik afgelopen 50%~~
+    * Alles wat ik heb gedaan
+    * ~~Alles wat beter kan~~
+    * ~~Alles wat goed ging~~
+    * ~~Beredeneer leerdoelen~~
+* ~~Presentatie~~ + video, moet nog video maken :(
+* Stage verslag
+* Testcodes
+    * Uitleg per code wat de functie is en waarom deze bestaat
+    * De switch tussen grijper en as 5 invoegen binnen de controller codes
+* ~~Backlog~~
+    * Uitleg over de items en waarom ze wel of niet te doen zijn
+* Stackholders
+* Testplan + Rapport
+* Planning
+    * Uitleg planning
+* Reflectie stagebegeleider
+* Ontwerp verslag
+    * Uitleggen ontwerp keuzes
+    * Uitleggen gebrekken en wijzigingen met volgende versie

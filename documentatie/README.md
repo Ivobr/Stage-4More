@@ -2,37 +2,51 @@
 
 In deze map is alle documentatie te vinden voor de 50% opleverset.
 
+## Backlog & Planning
+
+In de
+map [Backlog & Planning](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Backlog%20en%20planning)
+kan de backlog en de planning van deze periode gevonden worden. Ook staat er een pdf
+bestand in welke extra context geeft aan de product backlog.
+
 ## Onderzoek
 
-In de map [Onderzoeken](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Onderzoeken) kan het
+In de map [Onderzoeken](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Onderzoeken) kan het
 keuze onderzoek gevonden worden voor het kiezen van de robot arm en grijper. Ook kan het onderzoek/testplan voor de
 bewegings functies gevonden worden in deze map.
 
 ## Ontwerpen
 
-In de map [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Ontwerpen) kunnen alle
+In de map [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Ontwerpen) kunnen alle
 gemaakte ontwerpen gevonden worden zoals: Elektrische schema's, schematische
 ontwerpen en de flowdiagrammen.
+
+## Presentatie
+
+In de map [Presentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Presentatie) kan de 50%
+powerpoint en video van de presentatie gevonden worden.
+
+## Reflectie
+
+In de map [Reflectie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Reflectie) kan mijn
+reflectie en de reflectie geschreven door mijn stage begeleider gevonden worden.
+
+## Stage verslag
+
+In de map [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Stage%20verslag) kan de
+huidige versie van mijn stage verslag/rapport gevonden worden.
 
 ## Testplannen en rapport
 
 In de
-map [Testplannen & rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Testplannen%20%26%20Rapport)
+map [Testplannen & rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/Documentatie/Testplannen%20%26%20Rapport)
 is het testplan te vinden voor de requirments. Ook staat het testplan voor de
 beweginsfuncties hierin.
-
-## Stage verslag
-
-In de map [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Stage%20verslag) kan de
-huidige versie van mijn stage verslag/rapport gevonden worden
-
-## Presentatie
-
-Inde map [Presentatie]() kan de 50% powerpoint en video terug gevonden worden.
 
 ## Changelog
 
 | Wie          | Datum      | Wat                                                                           |
-|--------------|------------|-------------------------------------------------------------------------------|
+|--------------|:-----------|-------------------------------------------------------------------------------|
 | Ivo Bruinsma | 6-11-2025  | Aanmaak document                                                              |
 | Ivo Bruinsma | 10-11-2025 | Kop Ontwerpen, Presentatie, Testplannen en rapport & Stage verslag geschreven |
+| Ivo Bruinsma | 12-11-2025 | Kop Backlog & Planning, Reflectie & presentatie geschreven/herschreven        |

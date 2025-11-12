@@ -1,7 +1,7 @@
 # TestCode
 
 In deze map kunnen alle geteste codes gevonden worden. Deze codes zijn geschreven om de bewegingfuncties te testen.\
-Maar ook voor het testen van de verschillende aanstuur mogelijkheden via de controller.\
+Maar ook voor het testen van de verschillende aanstuur mogelijkheden via de controller.  
 Alle codes welke geschreven worden om een functionaliteit te testen worden in deze map gezet.
 
 ## Codes
