@@ -31,17 +31,18 @@ powerpoint en video van de presentatie gevonden worden.
 In de map [Reflectie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Reflectie) kan mijn
 reflectie en de reflectie geschreven door mijn stage begeleider gevonden worden.
 
-## Stage verslag
-
-In de map [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Stage%20verslag) kan de
-huidige versie van mijn stage verslag/rapport gevonden worden.
-
 ## Testplannen en rapport
 
 In de
 map [Testplannen & rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Testplannen%20%26%20Rapport)
 is het testplan te vinden voor de requirements. Ook staat het testplan voor de
 bewegingsfuncties hierin.
+
+## Verslagen
+
+In de map [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Verslagen) kan de
+huidige versie van mijn stage verslag/rapport gevonden worden. Ook staat de huidige versie van het ontwerpverslag
+hierbij.
 
 ## Changelog
 

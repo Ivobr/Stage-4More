@@ -21,7 +21,7 @@ documentatie gevonden worden zoals:
 * [Onderzoek](documentatie/Onderzoeken)
 * [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Ontwerpen)
 * [Testplannen & Rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Testplannen%20%26%20Rapport)
-* [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Stage%20verslag)
+* [Verslagen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Verslagen)
 * [Backlog & planning](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Backlog%20en%20planning)
 * [Presentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Presentatie)
 * [Reflectie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Reflectie)
@@ -29,7 +29,7 @@ documentatie gevonden worden zoals:
 ## TestCodes
 
 In de map [TestCodes](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/TestCodes) kunnen alle codes gevonden
-worden welke zijn gebruikt om functies te testen maar ook implementaties van deze functies te testen.
+worden welke zijn gebruikt om functies te testen, maar ook implementaties van deze functies te testen.
 
 ## DemoVideos
 

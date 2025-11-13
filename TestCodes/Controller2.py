@@ -203,6 +203,8 @@ def readJoystick():
                         Xas = True
                     else:
                         Xas = False
+                else:
+                    Xas = False
             case 1:
                 if axis_val > 0.5:
                     moveCart(i, 1)
@@ -264,9 +266,10 @@ def main():
     r = calc.getR(pos[0], pos[1])
     while True:
         readJoystick()
-        # print("X = ", Xas, " Y = ", Yas, " Z = ", Zas)
-        # if Xas == False and Yas == False and Zas == False:
-        #     robot.StopMotion()
+        print("X = ", Xas, " Y = ", Yas, " Z = ", Zas)
+        if Xas == False and Yas == False and Zas == False:
+            robot.MotionQueueClear()
+            print(robot.GetMotionQueueLength())
 
 
 if __name__ == "__main__":
