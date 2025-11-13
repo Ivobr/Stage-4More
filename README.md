@@ -47,26 +47,24 @@ schokkende controller aansturing en de vloeiende aansturing via de controller.
 ## Opleverset inhoud
 
 * ~~Ontwerpen~~
-* onderzoeken keuze maken over hoe en wat ik doe met experimenteel onderzoek
+* ~~onderzoeken keuze maken over hoe en wat ik doe met experimenteel onderzoek~~
 * ~~demovideos~~
 * Reflectie
     * ~~Vooruitblik op volgende 50% & terugblik afgelopen 50%~~
-    * Alles wat ik heb gedaan
     * ~~Alles wat beter kan~~
     * ~~Alles wat goed ging~~
     * ~~Beredeneer leerdoelen~~
 * ~~Presentatie~~ + video, moet nog video maken :(
-* Stage verslag
-* Testcodes
-    * Uitleg per code wat de functie is en waarom deze bestaat
+* ~~Stage verslag~~
+* ~~Testcodes~~
+    * ~~Uitleg per code wat de functie is en waarom deze bestaat~~
     * De switch tussen grijper en as 5 invoegen binnen de controller codes
 * ~~Backlog~~
-    * Uitleg over de items en waarom ze wel of niet te doen zijn
-* Stackholders
-* Testplan + Rapport
-* Planning
-    * Uitleg planning
-* Reflectie stagebegeleider
-* Ontwerp verslag
-    * Uitleggen ontwerp keuzes
-    * Uitleggen gebrekken en wijzigingen met volgende versie
+    * ~~Uitleg over de items en waarom ze wel of niet te doen zijn~~
+* ~~Stackholders~~
+* ~~Testplan + Rapport~~
+* ~~Planning~~
+* ~~Reflectie stagebegeleider~~
+* ~~Ontwerp verslag~~
+    * ~~Uitleggen ontwerp keuzes~~
+    * ~~Uitleggen gebrekken en wijzigingen met volgende versie~~

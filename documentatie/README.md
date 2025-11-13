@@ -44,6 +44,8 @@ In de map [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25Oplever
 huidige versie van mijn stage verslag/rapport gevonden worden. Ook staat de huidige versie van het ontwerpverslag
 hierbij.
 
+<div style="page-break-after: always;"></div>
+
 ## Changelog
 
 | Wie          | Datum      | Wat                                                                           |
