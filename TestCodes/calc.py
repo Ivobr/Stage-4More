@@ -38,12 +38,18 @@ def calcPoint(x, r, takeNeg):
     # *#
     if x > r:
         x = r
+    elif x < -r:
+        x = -r
     y = math.sqrt(r ** 2 - x ** 2)
-    print("CalcPoint Y = ", y)
+    # print("CalcPoint Y = ", y)
 
     # voor als de negative waarde van y genomen moet worden om "onder" de x-as te komen
     if takeNeg:
         y = -y
-        return y
+        return y, x
     else:
-        return y
+        return y, x
+
+
+y, x = calcPoint(-626, 425, 0)
+print(x)
