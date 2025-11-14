@@ -20,8 +20,8 @@ cords = [
 ]
 # *
 # Aansluiting:
-# +24V -> + LED - -> DO0
-# 0V -> Button -> DI1
+# +24V -> + LED --> DO0
+# 0V -> Button → DI1
 # Niet aansluiten op DI0 als er al een led op DO0 zit
 print("LETS GET READY TO RUMBLE")
 

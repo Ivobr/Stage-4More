@@ -40,9 +40,7 @@ bewegingsfuncties hierin.
 
 ## Verslagen
 
-In de map [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Verslagen) kan de
-huidige versie van mijn stage verslag/rapport gevonden worden. Ook staat de huidige versie van het ontwerpverslag
-hierbij.
+In de map [Stage verslag](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Verslagen) kan het keuze onderzoek gevonden worden. Ook staan hier de huidige versies van het stage- en ontwerpverslag in.
 
 <div style="page-break-after: always;"></div>
 
