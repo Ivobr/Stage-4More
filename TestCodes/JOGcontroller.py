@@ -1,6 +1,8 @@
-from fairino import Robot
 import time
+
 import pygame
+
+from fairino import Robot
 
 Xas = False
 Yas = False
@@ -24,12 +26,6 @@ pygame.joystick.init()
 joystick = pygame.joystick.Joystick(0)
 joystick.init()
 robot.ActGripper(2, 1)
-
-
-def moveJ():
-    rtn, pos = robot.GetActualJointPosDegree()
-    pos[5] += 5
-    robot.MoveJ(pos, 0, 0)
 
 
 def JOG(nb, dir, vel, ref):

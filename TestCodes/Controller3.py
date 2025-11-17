@@ -11,7 +11,7 @@ joystick = 0
 
 user = 0
 tool = 0
-blendT = 500
+blendT = 1
 vel = 100
 pos = []
 
@@ -20,6 +20,7 @@ y = 0
 z = 0
 r = 0
 a = 0
+count = 0
 
 lastValX = lastValY = lastValZup = lastValZdown = lastValS5 = lastValS4 = 0
 
@@ -30,6 +31,8 @@ ZasUp = False
 ZasDown = False
 S5 = False
 S4 = False
+gripper = False
+stopped = False
 
 
 def setup():
@@ -54,33 +57,57 @@ def setup():
     print(r, a)
 
 
-def IncreaseR(axis_val, direction):
-    # Function only for axis 1
-    vel = (axis_val * 100) / 2
-    print(vel)
+def stop():
+    robot.StopMotion()
+    robot.DragTeachSwitch(1)
+    time.sleep(5)
+    robot.DragTeachSwitch(0)
 
+
+def IncreaseR(axis_val, direction):
+    global lastValY, vel, stopped, count
+    stopped = False
+    rtn, size = robot.GetMotionQueueLength()
+    print(count)
+    if count > 3:
+        if size < 2:
+            count = 0
+        return
+    if axis_val - lastValY > 0.1 or axis_val - lastValY < -0.1:
+        vel = (axis_val * 100) / 2
+        lastValY = axis_val
     rtn, pos = robot.GetActualTCPPose()
     r = calc.getR(pos[0], pos[1])
     a = calc.getA(pos[0], pos[1])
+
     if direction:
-        r += 10
+        r += 100
     else:
-        r -= 10
+        r -= 100
+
     pos[0], pos[1] = calc.increaseR(r, a)
     rtn = robot.MoveCart(desc_pos=pos, tool=tool, user=user, vel=vel, blendT=blendT)
-    print(rtn)
-
-    print("Not scary for me")
+    count += 1
 
 
 def JOG(number, direction, axis_val):
+    global gripper, stopped
+    stopped = False
     robot.StopJOG(3)
     # little sleep to reset
     time.sleep(0.1)
-    if number == 4 or number == 5:
+    if number == 2:
         vel = (axis_val * 100) / 4
         print("Speed for ax 4 and 5 ", vel)
         rtn = robot.StartJOG(ref=2, nb=3, dir=direction, max_dis=10000, vel=vel)
+    elif number == 5:
+        vel = (axis_val * 100) / 2
+        if gripper:
+            rtn = robot.StartJOG(ref=0, nb=6, dir=direction, max_dis=10000, vel=vel)
+        else:
+            rtn = robot.StartJOG(ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
+
+
     else:
         vel = (axis_val * 100) / 2
         rtn = robot.StartJOG(ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
@@ -88,7 +115,7 @@ def JOG(number, direction, axis_val):
 
 
 def readJoystick():
-    global joystick, Xas, Yas, ZasDown, ZasUp, lastValX, lastValY, lastValZdown, lastValZup
+    global joystick, Xas, Yas, ZasDown, ZasUp, S5, S4, lastValX, lastValY, lastValZdown, lastValZup, lastValS4, lastValS5, gripper
     axes = joystick.get_numaxes()
     buttons = joystick.get_numbuttons()
     for event in pygame.event.get():
@@ -101,42 +128,77 @@ def readJoystick():
             case 0:
                 if axis_val > 0.1:
                     if axis_val - lastValX > 0.1 or axis_val - lastValX < -0.1:
-                        print("if axis_val - lastValX > 0.1 or axis_val - lastValX < -0.1:")
+                        print(
+                            "if axis_val - lastValX > 0.1 or axis_val - lastValX < -0.1:")
                         print(axis_val)
-                        JOG(1, 1, axis_val)  # Nog eff checken of die niet de andere kant op moet
+                        # Nog eff checken of die niet de andere kant op moet
+                        JOG(1, 1, axis_val)
                         lastValX = axis_val
                     Xas = True
                 elif axis_val < -0.1:
                     axis_val = abs(axis_val)
                     if axis_val - lastValX > 0.1 or axis_val - lastValX < -0.1:
-                        JOG(1, 0, axis_val)  # Nog eff checken of die niet de andere kant op moet
+                        # Nog eff checken of die niet de andere kant op moet
+                        JOG(1, 0, axis_val)
                         lastValX = axis_val
                     Xas = True
                 else:
                     Xas = False
             case 1:
                 if axis_val > 0.1:
-                    if axis_val - lastValY > 0.1 or axis_val - lastValY < -0.1:
-                        # Needs to be decreasing
-                        IncreaseR(axis_val, 0)  # Axis_val, direction
-                        lastValY = axis_val
+                    IncreaseR(axis_val, 0)
                     Yas = True
                 elif axis_val < -0.1:
                     axis_val = abs(axis_val)
-                    if axis_val - lastValY > 0.1 or axis_val - lastValY < -0.1:
-                        # Needs to be increasing
-                        IncreaseR(axis_val, 1)
-                        lastValY = axis_val
+                    IncreaseR(axis_val, 1)
                     Yas = True
                 else:
                     Yas = False
+            case 2:
+                # as 5 and gripper
+                if axis_val > 0.1:
+                    if axis_val - lastValS5 > 0.1 or axis_val - lastValS5 < -0.1:
+                        JOG(5, 0, axis_val)
+                        lastValS5 = axis_val
+                    S5 = True
+                    print(axis_val)
+                elif axis_val < -0.1:
+                    axis_val = abs(axis_val)
+                    if axis_val - lastValS5 > 0.1 or axis_val - lastValS5 < -0.1:
+                        JOG(5, 1, axis_val)
+                        lastValS5 = axis_val
+
+                    print(";")
+                    S5 = True
+                else:
+                    S5 = False
+            case 3:
+                # as 4
+                if axis_val > 0.1:
+                    if axis_val - lastValS4 > 0.1 or axis_val - lastValS4 < -0.1:
+                        JOG(4, 0, axis_val)
+                        lastValS4 = axis_val
+                    S4 = True
+                    print(axis_val)
+                elif axis_val < -0.1:
+                    axis_val = abs(axis_val)
+                    if axis_val - lastValS4 > 0.1 or axis_val - lastValS4 < -0.1:
+                        JOG(4, 1, axis_val)
+                        lastValS4 = axis_val
+
+                    print(";")
+                    S4 = True
+                else:
+                    S4 = False
+
             case 4:
                 # L and R2 start at -1.0 so make them  > 0
                 axis_val += 1
                 if axis_val > 0.1:
                     if axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2:
-                        print(" if axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2:")
-                        JOG(4, 0, axis_val)
+                        print(
+                            " if axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2:")
+                        JOG(2, 0, axis_val)
                         lastValZdown = axis_val
                     ZasDown = True
                 else:
@@ -145,27 +207,43 @@ def readJoystick():
                 axis_val += 1
                 if axis_val > 0.1:
                     if axis_val - lastValZup > 0.2 or axis_val - lastValZup < -0.2:
-                        print(" if axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2:")
-                        JOG(5, 1, axis_val)
+                        JOG(2, 1, axis_val)
                         lastValZup = axis_val
                     ZasUp = True
                 else:
                     ZasUp = False
 
+    for i in range(buttons):
+        button_val = joystick.get_button(i)
+        if button_val:
+            match i:
+                case 0:
+                    robot.MoveGripper(2, 100, 100, 100, 10000, 0, 0, 0, 0, 0)
+                case 1:
+                    robot.MoveGripper(2, 0, 100, 100, 10000, 0, 0, 0, 0, 0)
+                case 5:
+                    print("Noodknop functie")
+                    stop()
+                case 15:
+                    gripper = not gripper
+                    robot.SetDO(0, gripper)
+                    time.sleep(1)
+
 
 def main():
-    global r, a, Xas, Yas, ZasDown, ZasUp
+    global r, a, Xas, Yas, ZasDown, ZasUp, S4, S5, stopped
     print("Main")
 
     setup()
     while True:
         readJoystick()
-        if Xas == False and Yas == False and ZasDown == False and ZasUp == False:
+        if Xas == False and Yas == False and ZasDown == False and ZasUp == False and S4 == False and S5 == False and stopped == False:
             robot.StopJOG(3)
             robot.StopMotion()
             print(robot.GetMotionQueueLength())
             robot.MotionQueueClear()
             print(robot.GetMotionQueueLength())
+            stopped = True
 
 
 if __name__ == "__main__":

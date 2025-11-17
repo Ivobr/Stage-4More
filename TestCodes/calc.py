@@ -9,7 +9,7 @@ import math
 #       X meegegeven*#
 
 def getA(x, y):
-    angle = math.atan(y / x)  # Overstaand / Aanliggend
+    angle = math.atan2(y, x)  # Overstaand / Aanliggend
     a = math.degrees(angle)  # reken van radiale naar graden
     return a
 
@@ -30,10 +30,3 @@ def increaseR(r, a):
     x = r * math.cos(a)
     y = r * math.sin(a)
     return x, y
-
-
-print(getR(3, 4))
-
-print(getA(3, 4))
-
-print(increaseR(10, getA(3, 4)))

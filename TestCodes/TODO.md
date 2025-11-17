@@ -14,8 +14,10 @@
 * JOG
     * ~~JOG invoegen voor enkel j1 hiermee blijft de straal even groot~~
     * ~~JOG invoegen voor de Z-as~~
+    * As 4, 5 en 6
+        * Switch tussen grijper en as 5
 * IncrementR:
-    * Fixen dat het bewegen doorgaat als de joystick waardes niet veranderen.
+    * ~~Fixen dat het bewegen doorgaat als de joystick waardes niet veranderen.~~
         * Vel los zetten van elke beweging
             * Vel in aparte variable zetten en deze alleen updaten bij de 10% verhoging
         * Functie altijd aanroepen
