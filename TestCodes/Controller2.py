@@ -34,7 +34,7 @@ xOpp = False
 vel = 100
 user = 0
 tool = 0
-blendT = 500  # experimenteer met waarde voor misschien een soepele beweging en stoppen wanneer nodig
+blendT = -1.0  # experimenteer met waarde voor misschien een soepele beweging en stoppen wanneer nodig
 
 rtn, pos = robot.GetActualTCPPose()
 
