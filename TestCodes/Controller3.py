@@ -9,6 +9,7 @@ robot = Robot.RPC('192.168.178.23')
 
 joystick = 0
 
+acc = 20
 user = 0
 tool = 0
 blendT = 1
@@ -33,6 +34,42 @@ S5 = False
 S4 = False
 gripper = False
 stopped = False
+
+
+def immediate_stop():
+    """Agressieve, directe stop - gebruik wanneer joystick naar neutraal gaat."""
+    global stopped, count
+    stopped = True
+    count = 0
+
+    try:
+        # Stop JOG (houd JOG-threads stil)
+        robot.StopJOG(3)
+        robot.Mode(0)  # reset motion mode / cancel queues (GOED EFFECT)
+        time.sleep(0.01)
+        robot.Mode(1)  # her-enable robot so it's usable
+        time.sleep(0.01)
+        robot.StopMotion()
+        robot.MotionQueueClear()
+
+        # Probeer queue te legen
+        try:
+            robot.MotionQueueClear()
+        except Exception as e:
+            # als MotionQueueClear faalt, probeer nogmaals kort daarna
+            time.sleep(0.02)
+            try:
+                robot.MotionQueueClear()
+            except Exception:
+                pass
+
+        # kleine safety pulse via DragTeach (optioneel, als je die hebt)
+        # robot.DragTeachSwitch(1)
+        # time.sleep(0.02)
+        # robot.DragTeachSwitch(0)
+
+    except Exception as e:
+        print("immediate_stop failed:", e)
 
 
 def setup():
@@ -65,29 +102,41 @@ def stop():
 
 
 def IncreaseR(axis_val, direction):
-    global lastValY, vel, stopped, count
+    global lastValY, vel, stopped
+
     stopped = False
-    rtn, size = robot.GetMotionQueueLength()
-    print(count)
-    if count > 3:
-        if size < 2:
-            count = 0
-        return
-    if axis_val - lastValY > 0.1 or axis_val - lastValY < -0.1:
-        vel = (axis_val * 100) / 2
+
+    # snelheid bepalen
+    if abs(axis_val - lastValY) > 0.05:
+        vel = (axis_val * 100)  # servo kan hogere vel aan
         lastValY = axis_val
+
+    desc_pos_dt = [0, 0, 0, 0, 0, 0]  # grote stap van de stap in mm wordt berekent
+    pos_gain = [1, 1, 0, 0, 0, 0]  # de hoeveelheid van de stap welke wordt genomen 1 = 100%
+    temp_pos = [0, 0, 0, 0, 0, 0]
+
+    # huidige positie ophalen
     rtn, pos = robot.GetActualTCPPose()
+    print("Read pos ", pos)
     r = calc.getR(pos[0], pos[1])
     a = calc.getA(pos[0], pos[1])
 
-    if direction:
-        r += 100
+    # delta R berekenen
+    dr = 5  # mm per tick (smooth)
+    if direction == 1:
+        r += dr
     else:
-        r -= 100
+        r -= dr
+    # nieuwe X,Y berekenen
+    temp_pos[0], temp_pos[1] = calc.increaseR(r, a)
+    desc_pos_dt[0] = temp_pos[0] - pos[0]
+    desc_pos_dt[1] = temp_pos[1] - pos[1]
+    print("pos na de increaseR(r,a) ", temp_pos)
 
-    pos[0], pos[1] = calc.increaseR(r, a)
-    rtn = robot.MoveCart(desc_pos=pos, tool=tool, user=user, vel=vel, blendT=blendT)
-    count += 1
+    # **Servo instead of MoveCart**
+    rtn = robot.ServoCart(desc_pos=desc_pos_dt, mode=2, vel=0, pos_gain=pos_gain, acc=0, gain=0.0, cmdT=0.008,
+                          filterT=0.0, )
+    print(rtn)
 
 
 def JOG(number, direction, axis_val):
@@ -106,8 +155,6 @@ def JOG(number, direction, axis_val):
             rtn = robot.StartJOG(ref=0, nb=6, dir=direction, max_dis=10000, vel=vel)
         else:
             rtn = robot.StartJOG(ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
-
-
     else:
         vel = (axis_val * 100) / 2
         rtn = robot.StartJOG(ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
@@ -115,7 +162,7 @@ def JOG(number, direction, axis_val):
 
 
 def readJoystick():
-    global joystick, Xas, Yas, ZasDown, ZasUp, S5, S4, lastValX, lastValY, lastValZdown, lastValZup, lastValS4, lastValS5, gripper
+    global joystick, Xas, Yas, ZasDown, ZasUp, S5, S4, lastValX, lastValY, lastValZdown, lastValZup, lastValS4, lastValS5, gripper, count, stopped
     axes = joystick.get_numaxes()
     buttons = joystick.get_numbuttons()
     for event in pygame.event.get():
@@ -128,8 +175,6 @@ def readJoystick():
             case 0:
                 if axis_val > 0.1:
                     if axis_val - lastValX > 0.1 or axis_val - lastValX < -0.1:
-                        print(
-                            "if axis_val - lastValX > 0.1 or axis_val - lastValX < -0.1:")
                         print(axis_val)
                         # Nog eff checken of die niet de andere kant op moet
                         JOG(1, 1, axis_val)
@@ -154,6 +199,7 @@ def readJoystick():
                     Yas = True
                 else:
                     Yas = False
+                    count = 0
             case 2:
                 # as 5 and gripper
                 if axis_val > 0.1:
@@ -167,8 +213,6 @@ def readJoystick():
                     if axis_val - lastValS5 > 0.1 or axis_val - lastValS5 < -0.1:
                         JOG(5, 1, axis_val)
                         lastValS5 = axis_val
-
-                    print(";")
                     S5 = True
                 else:
                     S5 = False
@@ -185,7 +229,6 @@ def readJoystick():
                     if axis_val - lastValS4 > 0.1 or axis_val - lastValS4 < -0.1:
                         JOG(4, 1, axis_val)
                         lastValS4 = axis_val
-
                     print(";")
                     S4 = True
                 else:
@@ -196,8 +239,6 @@ def readJoystick():
                 axis_val += 1
                 if axis_val > 0.1:
                     if axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2:
-                        print(
-                            " if axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2:")
                         JOG(2, 0, axis_val)
                         lastValZdown = axis_val
                     ZasDown = True
@@ -228,6 +269,13 @@ def readJoystick():
                     gripper = not gripper
                     robot.SetDO(0, gripper)
                     time.sleep(1)
+    no_axes_active = not (Xas or Yas or ZasDown or ZasUp or S4 or S5)
+
+    if no_axes_active and not stopped:
+        immediate_stop()
+    elif not no_axes_active:
+        # we bewegen weer → stop-blokkade uit
+        stopped = False
 
 
 def main():
@@ -238,10 +286,12 @@ def main():
     while True:
         readJoystick()
         if Xas == False and Yas == False and ZasDown == False and ZasUp == False and S4 == False and S5 == False and stopped == False:
+            print("In if statement")
             robot.StopJOG(3)
+            time.sleep(0.05)
             robot.StopMotion()
-            print(robot.GetMotionQueueLength())
             robot.MotionQueueClear()
+            print(robot.GetMotionQueueLength())
             print(robot.GetMotionQueueLength())
             stopped = True
 
