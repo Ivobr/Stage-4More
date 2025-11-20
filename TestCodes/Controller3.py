@@ -102,41 +102,34 @@ def stop():
 
 
 def IncreaseR(axis_val, direction):
-    global lastValY, vel, stopped
-
+    global lastValY, stopped, count
     stopped = False
-
-    # snelheid bepalen
-    if abs(axis_val - lastValY) > 0.05:
-        vel = (axis_val * 100)  # servo kan hogere vel aan
-        lastValY = axis_val
-
-    desc_pos_dt = [0, 0, 0, 0, 0, 0]  # grote stap van de stap in mm wordt berekent
+    desc_pos_dt = [1, 1, 0, 0, 0, 0]  # grote stap van de stap in mm wordt berekent
     pos_gain = [1, 1, 0, 0, 0, 0]  # de hoeveelheid van de stap welke wordt genomen 1 = 100%
     temp_pos = [0, 0, 0, 0, 0, 0]
-
-    # huidige positie ophalen
+    # TO
+    # * Versnelling aanpassen door de stap grote te wijzigen (pos_gain hoe kleiner die is hoe minder er van de stap wordt genomen)
+    # * Stap uitrekenen en omzetten naar welke waardes nog hoeveel mm moet verplaatsen
+    # * Standaard waarden van de hele beweging te nemen
+    # *
+    # *#
     rtn, pos = robot.GetActualTCPPose()
-    print("Read pos ", pos)
     r = calc.getR(pos[0], pos[1])
     a = calc.getA(pos[0], pos[1])
 
-    # delta R berekenen
-    dr = 5  # mm per tick (smooth)
-    if direction == 1:
-        r += dr
+    if direction:
+        r += 10
     else:
-        r -= dr
-    # nieuwe X,Y berekenen
-    temp_pos[0], temp_pos[1] = calc.increaseR(r, a)
+        r -= 10
+
+    Nx, Ny = calc.increaseR(r, a)
+    temp_pos[0], temp_pos[1] = Nx, Ny
     desc_pos_dt[0] = temp_pos[0] - pos[0]
     desc_pos_dt[1] = temp_pos[1] - pos[1]
-    print("pos na de increaseR(r,a) ", temp_pos)
-
-    # **Servo instead of MoveCart**
-    rtn = robot.ServoCart(desc_pos=desc_pos_dt, mode=2, vel=0, pos_gain=pos_gain, acc=0, gain=0.0, cmdT=0.008,
-                          filterT=0.0, )
-    print(rtn)
+    print(desc_pos_dt)
+    rtn = robot.ServoCart(mode=2, desc_pos=desc_pos_dt, pos_gain=pos_gain)
+    count += 1
+    print(count)
 
 
 def JOG(number, direction, axis_val):
@@ -265,11 +258,15 @@ def readJoystick():
                 case 5:
                     print("Noodknop functie")
                     stop()
+                case 2:
+                    IncreaseR(0, 1)
+                case 3:
+                    IncreaseR(0, 0)
                 case 15:
                     gripper = not gripper
                     robot.SetDO(0, gripper)
                     time.sleep(1)
-    no_axes_active = not (Xas or Yas or ZasDown or ZasUp or S4 or S5)
+    no_axes_active = not (Xas or ZasDown or ZasUp or S4 or S5)
 
     if no_axes_active and not stopped:
         immediate_stop()
@@ -285,7 +282,7 @@ def main():
     setup()
     while True:
         readJoystick()
-        if Xas == False and Yas == False and ZasDown == False and ZasUp == False and S4 == False and S5 == False and stopped == False:
+        if Xas == False and ZasDown == False and ZasUp == False and S4 == False and S5 == False and stopped == False:
             print("In if statement")
             robot.StopJOG(3)
             time.sleep(0.05)
