@@ -21,7 +21,7 @@ documentatie gevonden worden zoals:
 * [Onderzoek](documentatie/Onderzoeken)
 * [Ontwerpen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Ontwerpen)
 * [Testplannen & Rapport](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Testplannen%20%26%20Rapport)
-* [Verslagen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Verslagen)
+* [Verslagen](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Verslagen) (Sorry voor alle spel- en gramaticafouten)
 * [Backlog & planning](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Backlog%20en%20planning)
 * [Presentatie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Presentatie)
 * [Reflectie](https://github.com/Ivobr/Stage-4More/tree/50%25OpleverSet/documentatie/Reflectie)
