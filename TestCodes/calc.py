@@ -1,13 +1,6 @@
 import math
 
 
-# *
-# Wat moet er in calc gebeuren??
-#   Straal verkrijgen
-#   straal verhogen
-#       Hoek nodig
-#       X meegegeven*#
-
 def getA(x, y):
     angle = math.atan2(y, x)  # Overstaand / Aanliggend
     a = math.degrees(angle)  # reken van radiale naar graden

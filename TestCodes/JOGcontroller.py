@@ -20,6 +20,10 @@ values = [0, 0, 0, 0, 0, 0]
 TrueValues = [0, 0, 0, 0, 0, 0]
 
 robot = Robot.RPC('192.168.178.23')
+p_lim = [170, 80, 150, 80, 170, 170]
+n_lim = [-170, -260, -150, -260, -170, -170]
+robot.SetLimitPositive(p_lim)
+robot.SetLimitNegative(n_lim)
 
 pygame.init()
 pygame.joystick.init()
@@ -195,8 +199,3 @@ while True:
         if Xas == False and Yas == False and ZasUp == False and ZasDown == False and S5 == False and S4 == False:
             robot.StopJOG(3)
             lastValX = lastValY = lastValZup = lastValZdown = lastValS4 = lastValS5 = 0
-        # else:
-        # print("Xas = ", Xas)
-        # print("Yas = ", Yas)
-        # print("Kop = ", kop)
-        # print("Kop2 = ", kop2)
