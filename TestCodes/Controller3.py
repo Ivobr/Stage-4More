@@ -258,9 +258,9 @@ def readJoystick():
         if button_val:
             match i:
                 case 0:
-                    robot.MoveGripper(2, 100, 100, 100, 10000, 0, 0, 0, 0, 0)
+                    robot.MoveGripper(2, 100, 100, 10, 10000, 0, 0, 0, 0, 0)
                 case 1:
-                    robot.MoveGripper(2, 0, 100, 100, 10000, 0, 0, 0, 0, 0)
+                    robot.MoveGripper(2, 0, 100, 10, 10000, 0, 0, 0, 0, 0)
                 case 5:
                     print("Noodknop functie")
                     stop()
