@@ -1,39 +1,42 @@
 from fairino import Robot
 import time
+
 robot = Robot.RPC('192.168.178.23')
 # basic setup
 tool = user = 0
 blendT = -1.0
 flag = 0
 
-robot.ActGripper(2,0)
+robot.ActGripper(2, 0)
 time.sleep(1)
 robot.ActGripper(2, 1)
 time.sleep(1)
 
 cords = [
     # 375 -> -275
-    [625, 4.438, -32.046, -179, -0.404, 41.868], # pickup point
-    [-76.302, -472.35, 123.796, -179.11, -1.699, -40.09], # drop point
+    [625.004, 4.401, -24.322, -179, -2.404, -133.868],  # pickup point
+    [-76.302, -472.35, 136.363, -179.11, -1.699, -133.09],  # drop point
 ]
-#*
+# *
 # Aansluiting:
 # +24V -> + LED - -> DO0
 # 0V -> Button -> DI1
 # Niet aansluiten op DI0 als er al een led op DO0 zit
 print("LETS GET READY TO RUMBLE")
 
+
 def IO():
     while True:
         rtn, state = robot.GetDI(1)
         print(rtn)
         if state:
-            rtn = robot.SetDO(0,1)
+            rtn = robot.SetDO(0, 1)
             print(state)
             return 1
         else:
-            rtn = robot.SetDO(0,0)
+            rtn = robot.SetDO(0, 0)
         time.sleep(1)
+
 
 def move():
     rtn = robot.MoveGripper(2, 0, 100, 8, 10000, 0, 0, 0, 0, 0)
@@ -92,4 +95,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    robot.SetDO(0,0)
+    robot.SetDO(0, 0)
