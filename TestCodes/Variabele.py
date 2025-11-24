@@ -1,7 +1,5 @@
 import time
-
 import pygame
-
 import calc
 from fairino import Robot
 
@@ -12,64 +10,23 @@ joystick = 0
 acc = 20
 user = 0
 tool = 0
-blendT = 1
 vel = 100
 pos = []
 
-x = 0
-y = 0
-z = 0
 r = 0
 a = 0
-count = 0
 
 lastValX = lastValY = lastValZup = lastValZdown = lastValS5 = lastValS4 = 0
 
 # bewegingen booleans
-Xas = False
-Yas = False
+Rotation = False
+incr = False
 ZasUp = False
 ZasDown = False
 S5 = False
 S4 = False
 gripper = False
 stopped = False
-
-
-def immediate_stop():
-    """Agressieve, directe stop - gebruik wanneer joystick naar neutraal gaat."""
-    global stopped, count
-    stopped = True
-    count = 0
-
-    try:
-        # Stop JOG (houd JOG-threads stil)
-        robot.StopJOG(3)
-        robot.Mode(0)  # reset motion mode / cancel queues (GOED EFFECT)
-        time.sleep(0.01)
-        robot.Mode(1)  # her-enable robot so it's usable
-        time.sleep(0.01)
-        robot.StopMotion()
-        robot.MotionQueueClear()
-
-        # Probeer queue te legen
-        try:
-            robot.MotionQueueClear()
-        except Exception as e:
-            # als MotionQueueClear faalt, probeer nogmaals kort daarna
-            time.sleep(0.02)
-            try:
-                robot.MotionQueueClear()
-            except Exception:
-                pass
-
-        # kleine safety pulse via DragTeach (optioneel, als je die hebt)
-        # robot.DragTeachSwitch(1)
-        # time.sleep(0.02)
-        # robot.DragTeachSwitch(0)
-
-    except Exception as e:
-        print("immediate_stop failed:", e)
 
 
 def setup():
@@ -95,6 +52,7 @@ def setup():
 
 
 def stop():
+    # Noodstop voor de controller
     robot.StopMotion()
     robot.DragTeachSwitch(1)
     time.sleep(5)
@@ -131,23 +89,29 @@ def JOG(number, direction, axis_val):
     # little sleep to reset
     time.sleep(0.1)
     if number == 2:
-        vel = (axis_val * 100) / 4
+        vel = (axis_val * 100) / 2
         print("Speed for ax 4 and 5 ", vel)
-        rtn = robot.StartJOG(ref=2, nb=3, dir=direction, max_dis=10000, vel=vel)
+        rtn = robot.StartJOG(ref=2, nb=3, dir=direction,
+                             max_dis=10000, vel=vel)
     elif number == 5:
-        vel = (axis_val * 100) / 2
+        vel = (axis_val * 100)
+        print("New speed ", vel)
         if gripper:
-            rtn = robot.StartJOG(ref=0, nb=6, dir=direction, max_dis=10000, vel=vel)
+            rtn = robot.StartJOG(ref=0, nb=6, dir=direction,
+                                 max_dis=10000, vel=vel)
         else:
-            rtn = robot.StartJOG(ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
+            rtn = robot.StartJOG(
+                ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
     else:
-        vel = (axis_val * 100) / 2
-        rtn = robot.StartJOG(ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
+        vel = (axis_val * 100)
+        print("New speed ", vel)
+        rtn = robot.StartJOG(
+            ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
     print(rtn)
 
 
 def readJoystick():
-    global joystick, a, Xas, Yas, ZasDown, ZasUp, S5, S4, lastValX, lastValY, lastValZdown, lastValZup, lastValS4, lastValS5, gripper, count, stopped
+    global joystick, a, Rotation, incr, ZasDown, ZasUp, S5, S4, lastValX, lastValY, lastValZdown, lastValZup, lastValS4, lastValS5, gripper, stopped
     axes = joystick.get_numaxes()
     buttons = joystick.get_numbuttons()
     for event in pygame.event.get():
@@ -156,38 +120,36 @@ def readJoystick():
     for i in range(axes):
         axis_val = joystick.get_axis(i)
         match i:
-            # Xas via JOG J1
+            # Rotation via JOG J1
             case 0:
                 if axis_val > 0.1:
                     if axis_val - lastValX > 0.1 or axis_val - lastValX < -0.1:
                         print(axis_val)
-                        # Nog eff checken of die niet de andere kant op moet
                         JOG(1, 1, axis_val)
                         lastValX = axis_val
-                    Xas = True
+                    Rotation = True
                 elif axis_val < -0.1:
                     axis_val = abs(axis_val)
                     if axis_val - lastValX > 0.1 or axis_val - lastValX < -0.1:
-                        # Nog eff checken of die niet de andere kant op moet
                         JOG(1, 0, axis_val)
                         lastValX = axis_val
-                    Xas = True
+                    Rotation = True
                 else:
-                    Xas = False
+                    Rotation = False
             case 1:
-                if not Yas:
+                if not incr:
                     rtn, pos = robot.GetActualTCPPose()
                     a = calc.getA(pos[0], pos[1])
                     robot.ServoMoveStart()
                 if axis_val > 0.1:
                     IncreaseR(axis_val, 0)
-                    Yas = True
+                    incr = True
                 elif axis_val < -0.1:
                     axis_val = abs(axis_val)
                     IncreaseR(axis_val, 1)
-                    Yas = True
+                    incr = True
                 else:
-                    Yas = False
+                    incr = False
                     rtn, pos = robot.GetActualTCPPose()
                     robot.ServoCart(
                         mode=0,
@@ -257,40 +219,25 @@ def readJoystick():
         button_val = joystick.get_button(i)
         if button_val:
             match i:
-                case 0:
-                    robot.MoveGripper(2, 100, 100, 1, 10000, 0, 0, 0, 0, 0)
-                case 1:
-                    robot.MoveGripper(2, 0, 100, 1, 10000, 0, 0, 0, 0, 0)
                 case 5:
                     print("Noodknop functie")
                     stop()
-                case 2:
-                    IncreaseR(0, 1)
-                case 3:
-                    IncreaseR(0, 0)
                 case 15:
                     gripper = not gripper
                     robot.SetDO(0, gripper)
                     time.sleep(1)
-    no_axes_active = not (Xas or ZasDown or ZasUp or S4 or S5)
-
-    if no_axes_active and not stopped:
-        immediate_stop()
-    elif not no_axes_active:
-        # we bewegen weer → stop-blokkade uit
-        stopped = False
 
 
 def main():
-    global r, a, Xas, Yas, ZasDown, ZasUp, S4, S5, stopped
+    global r, a, Rotation, incr, ZasDown, ZasUp, S4, S5, stopped
     print("Main")
 
     setup()
     while True:
         readJoystick()
-        if Xas == False and ZasDown == False and ZasUp == False and S4 == False and S5 == False and stopped == False:
+        if Rotation == False and ZasDown == False and ZasUp == False and S4 == False and S5 == False and stopped == False:
             print("In if statement")
-            robot.ServoModeEnd()
+            robot.ServoMoveEnd()
             robot.StopJOG(3)
             robot.StopMotion()
             robot.MotionQueueClear()
