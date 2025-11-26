@@ -1,13 +1,16 @@
-from fairino import Robot
 import time
-import pygame
-import calc
 
+import pygame
+
+import calc
+from fairino import Robot
+
+# *
+# Punt naar punt calculation code
+# Met variabele blendT, maar schiet ofc nog door als die wordt losgelaten
+# *#
 robot = Robot.RPC('192.168.178.23')
 
-x = 0
-y = 0
-z = 0
 a = 0
 r = 0
 Moving = False
@@ -32,7 +35,7 @@ xOpp = False
 vel = 100
 user = 0
 tool = 0
-blendT = 500  # experimenteer met waarde voor misschien een soepele beweging en stoppen wanneer nodig
+blendT = -1.0  # experimenteer met waarde voor misschien een soepele beweging en stoppen wanneer nodig
 
 rtn, pos = robot.GetActualTCPPose()
 
@@ -58,7 +61,7 @@ def setup():
 
 def moveCart(axis, direction):
     global x, y, r, a, takeNeg, xOpp, pos
-
+    # rtn, pos = robot.GetActualTCPPose()
     # update de waarden van r en a voor als deze gewijzigt zijn
     r = calc.getR(pos[0], pos[1])
     a = calc.getA(pos[0], pos[1])
@@ -72,14 +75,14 @@ def moveCart(axis, direction):
                         takeNeg = not takeNeg
                         xOpp = not xOpp
                         pos[0] = r
-                    pos[1] = calc.calcPoint(pos[0], r, takeNeg)
+                    pos[1], pos[0] = calc.calcPoint(pos[0], r, takeNeg)
                 else:
                     pos[0] += SmallMovement
                     if pos[0] > r:
                         takeNeg = not takeNeg
                         xOpp = not xOpp
                         pos[0] = r
-                    pos[1] = calc.calcPoint(pos[0], r, takeNeg)
+                    pos[1], pos[0] = calc.calcPoint(pos[0], r, takeNeg)
             else:
                 if BigMove:
                     if pos[0] < -r:
@@ -87,14 +90,14 @@ def moveCart(axis, direction):
                         xOpp = not xOpp
                         pos[0] = r
                     pos[0] -= BigMovement
-                    pos[1] = calc.calcPoint(pos[0], r, takeNeg)
+                    pos[1], pos[0] = calc.calcPoint(pos[0], r, takeNeg)
                 else:
                     if pos[0] < -r:
                         takeNeg = not takeNeg
                         xOpp = not xOpp
                         pos[0] = r
                     pos[0] -= SmallMovement
-                    pos[1] = calc.calcPoint(pos[0], r, takeNeg)
+                    pos[1], pos[0] = calc.calcPoint(pos[0], r, takeNeg)
             rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool, blendT=blendT)
         case 1:
             a = calc.getA(pos[0], pos[1])
@@ -121,11 +124,13 @@ def moveCart(axis, direction):
 
 
 # weghalen en in moveCart zetten
+# misschien alleenbehouden voor as 4 en 5
 def moveJ(axis, direction):
     print("Empty")
     rtn, pos = robot.GetActualJointPosDegree()
     match axis:
-        case 2:
+        # as 5
+        case 5:
             if direction:
                 if BigMove:
                     pos[4] += BigMovementA
@@ -151,6 +156,18 @@ def moveJ(axis, direction):
                     pos[3] -= SmallMovementA
             robot.MoveJ(joint_pos=pos, vel=vel, user=user, tool=tool)
 
+        case 6:
+            if BigMove:
+                if direction:
+                    pos[5] += BigMovementA
+                else:
+                    pos[5] -= BigMovementA
+            else:
+                if direction:
+                    pos[5] += SmallMovementA
+                else:
+                    pos[5] -= SmallMovementA
+            rtn = robot.MoveJ(joint_pos=pos, vel=vel, user=user, tool=tool)
         # gaat weg wordt vervangen met de switch van de boolean voor as 6
         case 13:
             if BigMove:
@@ -170,7 +187,7 @@ def moveJ(axis, direction):
 
 
 def readJoystick():
-    global joystick, BigMove, r, Xas, Yas, Zas
+    global joystick, BigMove, r, Xas, Yas, Zas, gripper
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -181,6 +198,7 @@ def readJoystick():
     for i in range(axes):
         axis_val = joystick.get_axis(i)
         match i:
+            # Linker joystick horizontaal
             case 0:
                 if axis_val > 0.5:
                     print("Read left joystick")
@@ -201,6 +219,10 @@ def readJoystick():
                         Xas = True
                     else:
                         Xas = False
+                else:
+                    Xas = False
+
+            # Linker joystick Verticaal
             case 1:
                 if axis_val > 0.5:
                     moveCart(i, 1)
@@ -210,11 +232,22 @@ def readJoystick():
                     Yas = True
                 else:
                     Yas = False
+
+            # Rechter joystick as 5
+            # moet nog switch in komen voor de grijper
             case 2:
                 if axis_val > 0.5:
-                    moveJ(i, 1)
+                    if gripper:
+                        moveJ(5, 1)
+                    else:
+                        moveJ(6, 1)
                 elif axis_val < -0.5:
-                    moveJ(i, 0)
+                    if gripper:
+                        moveJ(5, 0)
+                    else:
+                        moveJ(6, 0)
+
+            # Rechter joystick as 4
             case 3:
                 if axis_val > 0.5:
                     moveJ(i, 1)
@@ -239,7 +272,9 @@ def readJoystick():
                 case 1:
                     robot.MoveGripper(2, 0, 100, 100, 10000, 0, 0, 0, 0, 0)
                 case 15:
-                    r = 425  # wanneer alles soepel werkt veranderen naar wissel tussen as 5 en as 6 (grijper)
+                    gripper = not gripper  # wanneer alles soepel werkt veranderen naar wissel tussen as 5 en as 6 (grijper)
+                    robot.SetDO(0, gripper)
+                    time.sleep(0.5)
 
                 case 9:
                     BigMove = False
@@ -249,6 +284,7 @@ def readJoystick():
                     print("BIG MOVE TRUE")
 
                 # gaat weg als boolean wissel tussen as 5 en 6 werkt
+                # Gaan testen!!!!
                 case 13:
                     moveJ(i, 0)
                 case 14:
@@ -267,6 +303,7 @@ def main():
 
 if __name__ == "__main__":
     try:
+        setup()
         main()
     except KeyboardInterrupt:
         robot.ResetAllError()
