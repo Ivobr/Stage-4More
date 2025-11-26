@@ -5,6 +5,8 @@ import pygame
 import calc
 from fairino import Robot
 
+# *
+# Eigenlijk is het gewoon controller 3 met een MoveCart i.p.v. ServoCart*#
 robot = Robot.RPC('192.168.178.23')
 
 joystick = 0
@@ -86,10 +88,12 @@ def IncreaseR(axis_val, direction):
         r -= 100
 
     pos[0], pos[1] = calc.increaseR(r, a)
-    rtn = robot.MoveCart(desc_pos=pos, tool=tool, user=user, vel=vel, blendT=blendT)
+    rtn = robot.MoveCart(desc_pos=pos, tool=tool,
+                         user=user, vel=vel, blendT=blendT)
     count += 1
 
 
+# Herschrijven voor test de += 1 in de switch case zetten in de main
 def JOG(number, direction, axis_val):
     global gripper, stopped
     stopped = False
@@ -98,18 +102,21 @@ def JOG(number, direction, axis_val):
     time.sleep(0.1)
     if number == 2:
         vel = (axis_val * 100) / 4
-        rtn = robot.StartJOG(ref=2, nb=3, dir=direction, max_dis=10000, vel=vel)
+        rtn = robot.StartJOG(ref=2, nb=3, dir=direction,
+                             max_dis=10000, vel=vel)
     elif number == 5:
         vel = (axis_val * 100) / 2
         if gripper:
-            rtn = robot.StartJOG(ref=0, nb=6, dir=direction, max_dis=10000, vel=vel)
+            rtn = robot.StartJOG(ref=0, nb=6, dir=direction,
+                                 max_dis=10000, vel=vel)
         else:
-            rtn = robot.StartJOG(ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
-
+            rtn = robot.StartJOG(
+                ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
 
     else:
         vel = (axis_val * 100) / 2
-        rtn = robot.StartJOG(ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
+        rtn = robot.StartJOG(
+            ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
     print(rtn)
 
 
@@ -217,7 +224,12 @@ def readJoystick():
         if button_val:
             match i:
                 case 0:
-                    robot.MoveGripper(2, 100, 100, 100, 10000, 0, 0, 0, 0, 0)
+                    robot.MoveGripper(2, 100, 100, 1, 5000, 1, 0, 0, 0, 0)
+                    time.sleep(2)
+                    rtn, err, pos = robot.GetGripperCurPosition()
+                    print(pos)
+                    pos -= 1
+                    robot.MoveGripper(2, pos, 100, 1, 5000, 1, 0, 0, 0, 0)
                 case 1:
                     robot.MoveGripper(2, 0, 100, 100, 10000, 0, 0, 0, 0, 0)
                 case 5:

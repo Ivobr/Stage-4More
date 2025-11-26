@@ -1,6 +1,9 @@
 import math
 
 
+# *
+# Hier worden alle berekeningen gedaan voor een correcte MoveCart as vergroting*#
+
 def getA(x, y):
     angle = math.atan2(y, x)  # Overstaand / Aanliggend
     a = math.degrees(angle)  # reken van radiale naar graden

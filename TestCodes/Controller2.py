@@ -5,11 +5,12 @@ import pygame
 import calc
 from fairino import Robot
 
+# *
+# Punt naar punt calculation code
+# Met variabele blendT, maar schiet ofc nog door als die wordt losgelaten
+# *#
 robot = Robot.RPC('192.168.178.23')
 
-x = 0
-y = 0
-z = 0
 a = 0
 r = 0
 Moving = False
