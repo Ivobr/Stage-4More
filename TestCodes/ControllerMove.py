@@ -108,7 +108,7 @@ def moveCart(axis, direction):
                     r += BigMovement
                 else:
                     r += SmallMovement
-                x, y = calc.rIncrement(r, a)
+                x, y = calc.increaseR(r, a)
                 pos[0] = x
                 pos[1] = y
                 print(x, y)
@@ -117,7 +117,7 @@ def moveCart(axis, direction):
                     r -= BigMovement
                 else:
                     r -= SmallMovement
-                x, y = calc.rIncrement(r, a)
+                x, y = calc.increaseR(r, a)
                 pos[0] = x
                 pos[1] = y
             print(x, y)
@@ -271,6 +271,11 @@ def readJoystick():
             match i:
                 case 0:
                     robot.MoveGripper(2, 100, 100, 100, 10000, 0, 0, 0, 0, 0)
+                    time.sleep(2)
+                    rtn, err, pos = robot.GetGripperCurPosition()
+                    print(pos)
+                    pos -= 1
+                    robot.MoveGripper(2, pos, 100, 1, 5000, 1, 0, 0, 0, 0)
                 case 1:
                     robot.MoveGripper(2, 0, 100, 100, 10000, 0, 0, 0, 0, 0)
                 case 15:

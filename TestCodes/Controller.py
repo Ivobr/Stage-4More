@@ -251,9 +251,7 @@ def main():
         if Xas == False and Yas == False and ZasDown == False and ZasUp == False and S4 == False and S5 == False and stopped == False:
             robot.StopJOG(3)
             robot.StopMotion()
-            print(robot.GetMotionQueueLength())
             robot.MotionQueueClear()
-            print(robot.GetMotionQueueLength())
             stopped = True
 
 
