@@ -69,14 +69,6 @@ worden er nieuwe x en y coordinate berekent voor de nieuwe straal.
 Dit wordt gedaan door gebruik te maken van de cosinus (nieuw x coordinaat) en de sinus (nieuw y coordinaat). Door de
 formule om de hoek te berekenen om te schrijven kan er een nieuwe lengte van de x of y as berekend worden.
 
-``calcPoint(x, r, takeNeg)``: In deze functie wordt het bijpassende Y coordinaat berekent voor een nieuwe x waarde. Om
-dit te doen wordt er gebruik gemaakt van de standaard cirkel formule: (x-a) <sup>2</sup> + (y-b) <sup>2</sup> = r <sup>
-2</sup>. Omdat het a en b het middenpunt van de cirkel is en deze altijd gelijk is aan (0,0) kunnen deze worden
-weggelaten. Hierna eindigen we met x<sup>2</sup> + y<sup>2</sup> = r<sup>2</sup> dit kan worden omgeschreven worden naar
-y<sup>2</sup> = r<sup>2</sup> - x<sup>2</sup> hiermee krijgen we dus een nieuw y coordinaat. Als de robot een negative y
-waarden nodig heeft, wordt de berekende y waarde negatief gemaakt. Dit kan omdat bij een machtsvergelijking er altijd
-een positive en negative waarden wordt uitgerekend.
-
 ## MoveCart
 
 Deze code is gebruikt in het testplan movement en wordt hier veder in uitgelegd.
@@ -87,8 +79,9 @@ Deze code is gebruikt in het testplan movement en wordt hier veder in uitgelegd.
 
 ## Changelog
 
-| Wie          | Datum      | Wijziging                     |
-|--------------|------------|-------------------------------|
-| Ivo Bruinsma | 25-09-2025 | Aanmaak document              |
-| Ivo Bruinsma | 10-11-2025 | Introductie & opsomming codes |
-| Ivo Bruinsma | 14-11-2025 | Uitleg per code               |
+| Wie          | Datum      | Wijziging                                                    |
+|--------------|------------|--------------------------------------------------------------|
+| Ivo Bruinsma | 25-09-2025 | Aanmaak document                                             |
+| Ivo Bruinsma | 10-11-2025 | Introductie & opsomming codes                                |
+| Ivo Bruinsma | 14-11-2025 | Uitleg per code                                              |
+| Ivo Bruinsma | 26-11-2025 | Uitleg Controller2 & calc bijwerken en Controller3 toevoegen |
