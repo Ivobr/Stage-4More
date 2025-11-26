@@ -98,7 +98,8 @@ def moveCart(axis, direction):
                         pos[0] = r
                     pos[0] -= SmallMovement
                     pos[1], pos[0] = calc.calcPoint(pos[0], r, takeNeg)
-            rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool, blendT=blendT)
+            rtn = robot.MoveCart(desc_pos=pos, vel=vel,
+                                 user=user, tool=tool, blendT=blendT)
         case 1:
             a = calc.getA(pos[0], pos[1])
             r = calc.getR(pos[0], pos[1])
@@ -120,7 +121,8 @@ def moveCart(axis, direction):
                 pos[0] = x
                 pos[1] = y
             print(x, y)
-            rtn = robot.MoveCart(desc_pos=pos, vel=vel, user=user, tool=tool, blendT=blendT)
+            rtn = robot.MoveCart(desc_pos=pos, vel=vel,
+                                 user=user, tool=tool, blendT=blendT)
 
 
 # weghalen en in moveCart zetten
@@ -272,7 +274,8 @@ def readJoystick():
                 case 1:
                     robot.MoveGripper(2, 0, 100, 100, 10000, 0, 0, 0, 0, 0)
                 case 15:
-                    gripper = not gripper  # wanneer alles soepel werkt veranderen naar wissel tussen as 5 en as 6 (grijper)
+                    # wanneer alles soepel werkt veranderen naar wissel tussen as 5 en as 6 (grijper)
+                    gripper = not gripper
                     robot.SetDO(0, gripper)
                     time.sleep(0.5)
 
