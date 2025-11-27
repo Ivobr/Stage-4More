@@ -16,7 +16,8 @@ count = 0
 # coordinates
 # [[pick-up area],[drop area]]
 j_pos = [[87.29, -120.27, -91.78, -58.19, 88.87, 58],
-         [-89.309, -145.13, -65.344, -62.166, 88.871, 15.706]]
+         [-89.309, -145.13, -65.344, -62.166, 88.871, 15.706]
+         ]
 pos = []          # huidige positie
 r = 0             # Radius
 a = 0             # Hoek
@@ -74,6 +75,8 @@ def setup():
 
 
 def stop():
+    # Zet de arm voor 5 seconden in een staat waarbij die handmatig verplaatst kan worden.
+    # Ook stopt de arm gelijk met bewegen
     robot.StopMotion()
     robot.DragTeachSwitch(1)
     time.sleep(5)
@@ -83,6 +86,7 @@ def stop():
 def ServoCart(axis_val, direction):
     global r, a, count
 
+    # Zorgt ervoor dat de queue niet te lang wordt en de arm gelijk stopt bij het loslaten van de controller
     rtn, size = robot.GetMotionQueueLength()
     if count > 3:
         if size < 2:
@@ -115,7 +119,7 @@ def JOG(number, direction, axis_val):
         vel = (axis_val * 100) / 2
         robot.StartJOG(ref=2, nb=3, dir=direction, max_dis=10000, vel=vel)
 
-    # de motoren welke direct worden gestuurt
+    # De motoren welke direct worden gestuurt
     else:
         vel = (axis_val * 100)
         if gripper:
@@ -178,7 +182,9 @@ def readJoystick():
                     robot.StopMotion()
                     robot.MotionQueueClear()
             case 2:
-                # as 5 and gripper
+                # as 5 en grijper
+                # Hier is de axis_val beginpunt 0.2 ivm dat als de linker joystick wordt gebruikt de rechter joystick nog beetje beweegt
+                # Krijg je van een oude controller
                 if axis_val > 0.2:
                     if axis_val - lastValS5 > 0.1 or axis_val - lastValS5 < -0.1:
                         JOG(5, 0, axis_val)
@@ -197,7 +203,6 @@ def readJoystick():
                 if axis_val > 0.1:
                     if axis_val - lastValS4 > 0.1 or axis_val - lastValS4 < -0.1:
                         JOG(4, 0, axis_val)
-                        print("net onder JOG(4)", lastValS4)
                         lastValS4 = axis_val
                     S4 = True
                     print(axis_val)
@@ -211,7 +216,7 @@ def readJoystick():
                     S4 = False
 
             case 4:
-                # L and R2 start at -1.0 so make them  > 0
+                # L and R2 hebben een standaardt waarden van -1.0 ipv 0.0 dus door er +1 bij te doen wordt dit gelijk getrokken
                 axis_val += 1
                 if axis_val > 0.1:
                     if axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2:
@@ -237,6 +242,7 @@ def readJoystick():
             match i:
                 case 0:
                     # Open de grijper 1 mm veder zodat er minder druk op de grijper, maar de bloem blijft stevig zitten.
+                    # Kijken of dit echt werkt en welke andere manieren er zijn om minder druk op de grijper te krijgen
                     robot.MoveGripper(2, 100, 100, 1, 5000, 1, 0, 0, 0, 0)
                     time.sleep(2)
                     rtn, err, pos = robot.GetGripperCurPosition()
@@ -248,14 +254,12 @@ def readJoystick():
                     robot.MoveGripper(2, 0, 100, 1, 5000, 1, 0, 0, 0, 0)
 
                 case 2:
-                    # moveJ naar pick-up of drop area
-                    print("Placeholder")
+                    # moveJ naar pick-up area
                     robot.MoveJ(joint_pos=j_pos[0],
                                 tool=tool, user=user, vel=50)
 
                 case 3:
-                    # moveJ naar pick-up of drop area
-                    print("Placeholder")
+                    # moveJ naar drop area
                     robot.MoveJ(joint_pos=j_pos[1],
                                 tool=tool, user=user, vel=50)
 
