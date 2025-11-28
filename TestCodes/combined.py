@@ -15,18 +15,18 @@ count = 0
 
 # coordinates
 # [[pick-up area],[drop area]]
-j_pos = [[87.29, -120.27, -91.78, -58.19, 88.87, 58],
-         [-89.309, -145.13, -65.344, -62.166, 88.871, 15.706]
+j_pos = [[87.29, -120.27, -91.78, -58.19, 90, 58],
+         [91.606, -49.13, 66.899, -105.166, -90, 58]
          ]
-pos = []          # huidige positie
-r = 0             # Radius
-a = 0             # Hoek
+pos = []  # huidige positie
+r = 0  # Radius
+a = 0  # Hoek
 
 # veiligheids variabele
 secure = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0]
 mode = 0
 config = 1
-
+slowing = False
 
 # bewegings booleans
 lastValRot = lastValRotInc = lastValZup = lastValZdown = lastValS4 = lastValS5 = 0
@@ -102,7 +102,7 @@ def ServoCart(axis_val, direction):
     pos[1] = y
 
     rtn = robot.ServoCart(mode=0, desc_pos=pos, pos_gain=[
-                          1, 1, 1, 0, 0, 0], vel=100, acc=100)
+        1, 1, 1, 0, 0, 0], vel=100, acc=100)
     count += 1
 
 
@@ -122,7 +122,7 @@ def JOG(number, direction, axis_val):
     # De motoren welke direct worden gestuurt
     else:
         vel = (axis_val * 100)
-        if gripper:
+        if gripper and number == 5:
             robot.StartJOG(ref=0, nb=6, dir=direction, max_dis=10000, vel=vel)
         else:
             robot.StartJOG(ref=0, nb=number, dir=direction,
@@ -130,7 +130,7 @@ def JOG(number, direction, axis_val):
 
 
 def readJoystick():
-    global joystick, Rotation, RotationInc, ZasUp, ZasDown, S4, S5, lastValRot, lastValRotInc, lastValZup, lastValZdown, lastValS4, lastValS5, gripper
+    global slowing, joystick, Rotation, RotationInc, ZasUp, ZasDown, S4, S5, lastValRot, lastValRotInc, lastValZup, lastValZdown, lastValS4, lastValS5, gripper
     axes = joystick.get_numaxes()
     buttons = joystick.get_numbuttons()
     for event in pygame.event.get():
@@ -219,16 +219,32 @@ def readJoystick():
                 # L and R2 hebben een standaardt waarden van -1.0 ipv 0.0 dus door er +1 bij te doen wordt dit gelijk getrokken
                 axis_val += 1
                 if axis_val > 0.1:
-                    if axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2:
+                    rtn, pos = robot.GetActualTCPPose()
+                    print("Pos ", pos[2])
+                    rtn, speed = robot.GetTargetTCPSpeed()
+                    print("Speed ", speed[2])
+                    if pos[2] < 150 and speed[2] < -200:
+                        robot.StopJOG(3)
+                        time.sleep(1)
+                        JOG(2, 0, 0.25)
+                        # robot.ImmStopJOG()
+                    elif pos[2] < -20:
+                        robot.ImmStopJOG()
+                    elif axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2 and slowing == False:
                         JOG(2, 0, axis_val)
                         lastValZdown = axis_val
                     ZasDown = True
                 else:
                     ZasDown = False
+                    slowing = False
             case 5:
                 axis_val += 1
                 if axis_val > 0.1:
-                    if axis_val - lastValZup > 0.2 or axis_val - lastValZup < -0.2:
+                    rtn, pos = robot.GetActualTCPPose()
+                    print("Pos ", pos[2])
+                    if pos[2] > 400:
+                        robot.StopJOG(3)
+                    elif axis_val - lastValZup > 0.2 or axis_val - lastValZup < -0.2:
                         JOG(2, 1, axis_val)
                         lastValZup = axis_val
                     ZasUp = True
@@ -244,7 +260,7 @@ def readJoystick():
                     # Open de grijper 1 mm veder zodat er minder druk op de grijper, maar de bloem blijft stevig zitten.
                     # Kijken of dit echt werkt en welke andere manieren er zijn om minder druk op de grijper te krijgen
                     robot.MoveGripper(2, 100, 100, 1, 5000, 1, 0, 0, 0, 0)
-                    time.sleep(2)
+                    time.sleep(1.5)
                     rtn, err, pos = robot.GetGripperCurPosition()
                     print(pos)
                     pos -= 1
@@ -280,10 +296,14 @@ def main():
     while True:
         readJoystick()
         if Rotation == False and RotationInc == False and ZasDown == False and ZasUp == False and S4 == False and S5 == False and stopped == False:
-            robot.StopJOG(3)
-            robot.ServoMoveEnd()
-            robot.StopMotion()
-            robot.MotionQueueClear()
+            rtn = robot.StopJOG(3)
+            rtn = robot.ServoMoveEnd()
+            if rtn == 14:
+                print("Een limit", rtn)
+                rtn = robot.ResetAllError()
+                print(rtn)
+            rtn = robot.StopMotion()
+            rtn = robot.MotionQueueClear()
             stopped = True
             rtn, pos = robot.GetActualTCPPose()
             a = calc.getA(pos[0], pos[1])

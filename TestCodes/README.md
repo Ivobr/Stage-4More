@@ -79,9 +79,9 @@ Deze code is gebruikt in het testplan movement en wordt hier veder in uitgelegd.
 
 ## Changelog
 
-| Wie          | Datum      | Wijziging                                                    |
-|--------------|------------|--------------------------------------------------------------|
-| Ivo Bruinsma | 25-09-2025 | Aanmaak document                                             |
-| Ivo Bruinsma | 10-11-2025 | Introductie & opsomming codes                                |
-| Ivo Bruinsma | 14-11-2025 | Uitleg per code                                              |
-| Ivo Bruinsma | 26-11-2025 | Uitleg Controller2 & calc bijwerken en Controller3 toevoegen |
+| Wie          | Datum      | Wijziging                                                      |
+|--------------|------------|----------------------------------------------------------------|
+| Ivo Bruinsma | 25-09-2025 | Aanmaak document                                               |
+| Ivo Bruinsma | 10-11-2025 | Introductie & opsomming codes                                  |
+| Ivo Bruinsma | 14-11-2025 | Uitleg per code                                                |
+| Ivo Bruinsma | 26-11-2025 | Uitleg Controller2/3 & calc bijwerken en Controller3 toevoegen |
