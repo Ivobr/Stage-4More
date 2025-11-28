@@ -7,4 +7,4 @@
 /dataSources/
 /dataSources.local.xml
 
-/TestCodes/__pycache__
+/../TestCodes/__pycache__
