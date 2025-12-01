@@ -1,188 +1,203 @@
-# *
-# Code met alles bij elkaar
-#   Controller aansturen
-#       JOG (Voor J1, J4 t/m 6 en Z-as)
-#       MoveCart of ServoCart voor vergroting rotatieas
-#       Noodknop controller
-#       Grijper 1 mm vergroting voor minder druk
-#   Safety functies
-#       Pos en neg limit voor graden
-#       Checken of de limits voor alles nog goed ingesteld staat
 #
+# Compleet functionerende controller code
+# Er wordt een queue gecheckt voor er nieuwe cords worden gestuurt
+# Het is eigenlijk combined.py met meer comments
 #
-#
-#   Door blendT aan te passen naar -1.0 kunnen er stappen genomen worden i.p.v. smooth bewegingen*#
 
+from fairino import Robot
 import time
-
+import calc
 import pygame
 
-import calc
-from fairino import Robot
-
-# *
-# Eigenlijk is het gewoon controller 3 met een MoveCart i.p.v. ServoCart*#
-robot = Robot.RPC('192.168.178.23')
-
+# pygame
 joystick = 0
 
-# Voor rotatie increase
-r = 0
-a = 0
+# variable
+tool = 0
+user = 0
+vel = 0
+blendT = 1
 count = 0
 
-# Safety settings
+# coordinates
+# [[pick-up area],[drop area]]
+j_pos = [[87.29, -120.27, -91.78, -58.19, 90, 58],
+         [91.606, -49.13, 66.899, -105.166, -90, 58]
+         ]
+pos = []  # huidige positie
+r = 0  # Radius
+a = 0  # Hoek
+
+# veiligheids variabele
 secure = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0]
 mode = 0
 config = 1
+slowing = False
 
-# Robot settings
-user = 0
-tool = 0
-blendT = 1
-vel = 100
-pos = []
-
-lastValRo = lastValRoInc = lastValZup = lastValZdown = lastValS5 = lastValS4 = 0
-
-# bewegingen booleans
+# bewegings booleans
+lastValRot = lastValRotInc = lastValZup = lastValZdown = lastValS4 = lastValS5 = 0
 Rotation = False
 RotationInc = False
 ZasUp = False
 ZasDown = False
-S5 = False
 S4 = False
-gripper = False
+S5 = False
 stopped = False
+# Boolean om de grijper te selecteren
+gripper = False
+
+# robot verbinden
+robot = Robot.RPC('192.168.178.23')
 
 
 def setup():
-    global joystick, r, a, pos, mode, secure, config
-    rtn, pos = robot.GetActualTCPPose()
+    global joystick, r, a, pos
 
-    # initializer controller
+    print("Starting setup")
+
+    # Reken huidige waardes van de straal en hoek tenopzichte van het middenpunt
+    rtn, pos = robot.GetActualTCPPose()
+    r = calc.getR(pos[0], pos[1])
+    a = calc.getA(pos[0], pos[1])
+
+    # initalizeer controller
     pygame.init()
     pygame.joystick.init()
     joystick = pygame.joystick.Joystick(0)
     joystick.init()
 
-    # zet safety instellingen zodat bij contact de arm stopt
-    rtn = robot.SetAnticollision(mode, secure, config)
-    print("Anticollision set: ", rtn)
-    rtn = robot.SetCollisionStrategy(3, 2000, 100, 250)
-    print("CollisionStrategy set: ", rtn)
-
-    # reset en activeer de grijper
+    # Reset en activeer grijper
     robot.ActGripper(2, 0)
     time.sleep(1)
-    rtn = robot.ActGripper(2, 1)
-    time.sleep(3)
-    print(rtn)
+    robot.ActGripper(2, 1)
+    time.sleep(2)
 
-    r = calc.getR(pos[0], pos[1])
-    a = calc.getA(pos[0], pos[1])
-    print(r, a)
+    # veiligheids functies
+    rtn = robot.SetAnticollision(mode, secure, config)
+    print("SetAnticollosion: ", rtn)
+    rtn = robot.SetCollisionStrategy(3, 2000, 100, 250)
+    print("SetCollisionStrategy: ", rtn)
+
+    print("Setup done")
 
 
 def stop():
+    # Zet de arm voor 5 seconden in een staat waarbij die handmatig verplaatst kan worden.
+    # Ook stopt de arm gelijk met bewegen
     robot.StopMotion()
     robot.DragTeachSwitch(1)
     time.sleep(5)
     robot.DragTeachSwitch(0)
 
 
-def IncreaseR(axis_val, direction):
-    global lastValRoInc, vel, stopped, count
-    stopped = False
+def ServoCart(axis_val, direction):
+    global r, a, count
+
+    # Zorgt ervoor dat de queue niet te lang wordt en de arm gelijk stopt bij het loslaten van de controller
     rtn, size = robot.GetMotionQueueLength()
     if count > 3:
         if size < 2:
             count = 0
         return
-    if axis_val - lastValRoInc > 0.1 or axis_val - lastValRoInc < -0.1:
-        vel = (axis_val * 100) / 2
-        lastValRoInc = axis_val
     rtn, pos = robot.GetActualTCPPose()
     r = calc.getR(pos[0], pos[1])
-    a = calc.getA(pos[0], pos[1])
+    step = axis_val * 5
+    r += step if direction else -step
 
-    if direction:
-        r += 100
-    else:
-        r -= 100
+    x, y = calc.increaseR(r, a)
+    pos[0] = x
+    pos[1] = y
 
-    pos[0], pos[1] = calc.increaseR(r, a)
-    rtn = robot.MoveCart(desc_pos=pos, tool=tool,
-                         user=user, vel=vel, blendT=blendT)
+    rtn = robot.ServoCart(mode=0, desc_pos=pos, pos_gain=[
+        1, 1, 1, 0, 0, 0], vel=100, acc=100)
     count += 1
 
 
-# Herschrijven voor test de += 1 in de switch case zetten in de main
 def JOG(number, direction, axis_val):
     global gripper, stopped
+    print(number, axis_val)
     stopped = False
     robot.StopJOG(3)
-    # little sleep to reset
+    # Kleine sleep zodat alles echt stopt
     time.sleep(0.1)
+
+    # L2 en R2 -> z-as
     if number == 2:
-        vel = (axis_val * 100) / 4
-        rtn = robot.StartJOG(ref=2, nb=3, dir=direction,
-                             max_dis=10000, vel=vel)
-    else:
         vel = (axis_val * 100) / 2
-        if gripper:
-            rtn = robot.StartJOG(ref=0, nb=6, dir=direction,
-                                 max_dis=10000, vel=vel)
+        robot.StartJOG(ref=2, nb=3, dir=direction, max_dis=10000, vel=vel)
+
+    # De motoren welke direct worden gestuurt
+    else:
+        vel = (axis_val * 100)
+        if gripper and number == 5:
+            robot.StartJOG(ref=0, nb=6, dir=direction, max_dis=10000, vel=vel)
         else:
-            rtn = robot.StartJOG(
-                ref=0, nb=number, dir=direction, max_dis=10000, vel=vel)
+            robot.StartJOG(ref=0, nb=number, dir=direction,
+                           max_dis=10000, vel=vel)
 
 
 def readJoystick():
-    global joystick, Rotation, RotationInc, ZasDown, ZasUp, S5, S4, lastValRo, lastValRoInc, lastValZdown, lastValZup, lastValS4, lastValS5, gripper
+    global slowing, joystick, Rotation, RotationInc, ZasUp, ZasDown, S4, S5, lastValRot, lastValRotInc, lastValZup, lastValZdown, lastValS4, lastValS5, gripper
     axes = joystick.get_numaxes()
     buttons = joystick.get_numbuttons()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            return
+
+    # uitlezen joysticks
     for i in range(axes):
         axis_val = joystick.get_axis(i)
         match i:
-            # Rotation via JOG J1
             case 0:
                 if axis_val > 0.1:
-                    if axis_val - lastValRo > 0.1 or axis_val - lastValRo < -0.1:
+                    if axis_val - lastValRot > 0.1 or axis_val - lastValRot < -0.1:
                         # Nog eff checken of die niet de andere kant op moet
                         JOG(1, 1, axis_val)
-                        lastValRo = axis_val
+                        lastValRot = axis_val
                     Rotation = True
                 elif axis_val < -0.1:
                     axis_val = abs(axis_val)
-                    if axis_val - lastValRo > 0.1 or axis_val - lastValRo < -0.1:
+                    if axis_val - lastValRot > 0.1 or axis_val - lastValRot < -0.1:
                         # Nog eff checken of die niet de andere kant op moet
                         JOG(1, 0, axis_val)
-                        lastValRo = axis_val
+                        lastValRot = axis_val
                     Rotation = True
                 else:
                     Rotation = False
             case 1:
+                if not RotationInc:
+                    robot.ServoMoveStart()
                 if axis_val > 0.1:
-                    IncreaseR(axis_val, 0)
+                    ServoCart(axis_val, 0)
                     RotationInc = True
                 elif axis_val < -0.1:
                     axis_val = abs(axis_val)
-                    IncreaseR(axis_val, 1)
+                    ServoCart(axis_val, 1)
                     RotationInc = True
                 else:
+                    # Benodigdheid hiervan eff snel testen
                     RotationInc = False
+                    rtn, pos = robot.GetActualTCPPose()
+                    robot.ServoCart(
+                        mode=0,
+                        desc_pos=pos,
+                        pos_gain=[0, 0, 0, 0, 0, 0],  # no movement
+                        vel=0,
+                        acc=0
+                    )
+                    robot.ServoMoveEnd()
+                    robot.StopMotion()
+                    robot.MotionQueueClear()
             case 2:
-                # as 5 and gripper
-                if axis_val > 0.1:
+                # as 5 en grijper
+                # Hier is de axis_val beginpunt 0.2 ivm dat als de linker joystick wordt gebruikt de rechter joystick nog beetje beweegt
+                # Krijg je van een oude controller
+                if axis_val > 0.2:
                     if axis_val - lastValS5 > 0.1 or axis_val - lastValS5 < -0.1:
                         JOG(5, 0, axis_val)
                         lastValS5 = axis_val
                     S5 = True
-                elif axis_val < -0.1:
+                elif axis_val < -0.2:
                     axis_val = abs(axis_val)
                     if axis_val - lastValS5 > 0.1 or axis_val - lastValS5 < -0.1:
                         JOG(5, 1, axis_val)
@@ -197,6 +212,7 @@ def readJoystick():
                         JOG(4, 0, axis_val)
                         lastValS4 = axis_val
                     S4 = True
+                    print(axis_val)
                 elif axis_val < -0.1:
                     axis_val = abs(axis_val)
                     if axis_val - lastValS4 > 0.1 or axis_val - lastValS4 < -0.1:
@@ -207,59 +223,100 @@ def readJoystick():
                     S4 = False
 
             case 4:
-                # L and R2 start at -1.0 so make them  > 0
+                # L and R2 hebben een standaardt waarden van -1.0 ipv 0.0 dus door er +1 bij te doen wordt dit gelijk getrokken
                 axis_val += 1
                 if axis_val > 0.1:
-                    if axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2:
+                    rtn, pos = robot.GetActualTCPPose()
+                    print("Pos ", pos[2])
+                    rtn, speed = robot.GetTargetTCPSpeed()
+                    print("Speed ", speed[2])
+                    if pos[2] < 150 and speed[2] < -200:
+                        robot.StopJOG(3)
+                        time.sleep(1)
+                        JOG(2, 0, 0.25)
+                        # robot.ImmStopJOG()
+                    elif pos[2] < -20:
+                        robot.ImmStopJOG()
+                    elif axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2 and slowing == False:
                         JOG(2, 0, axis_val)
                         lastValZdown = axis_val
                     ZasDown = True
                 else:
                     ZasDown = False
+                    slowing = False
             case 5:
                 axis_val += 1
                 if axis_val > 0.1:
-                    if axis_val - lastValZup > 0.2 or axis_val - lastValZup < -0.2:
+                    rtn, pos = robot.GetActualTCPPose()
+                    print("Pos ", pos[2])
+                    if pos[2] > 400:
+                        robot.StopJOG(3)
+                    elif axis_val - lastValZup > 0.2 or axis_val - lastValZup < -0.2:
                         JOG(2, 1, axis_val)
                         lastValZup = axis_val
                     ZasUp = True
                 else:
                     ZasUp = False
 
+    # uitlezen buttons
     for i in range(buttons):
-        button_val = joystick.get_button(i)
-        if button_val:
+        button = joystick.get_button(i)
+        if button:
             match i:
                 case 0:
+                    # Open de grijper 1 mm veder zodat er minder druk op de grijper, maar de bloem blijft stevig zitten.
+                    # Kijken of dit echt werkt en welke andere manieren er zijn om minder druk op de grijper te krijgen
                     robot.MoveGripper(2, 100, 100, 1, 5000, 1, 0, 0, 0, 0)
-                    time.sleep(2)
+                    time.sleep(1.5)
                     rtn, err, pos = robot.GetGripperCurPosition()
                     print(pos)
                     pos -= 1
                     robot.MoveGripper(2, pos, 100, 1, 5000, 1, 0, 0, 0, 0)
+
                 case 1:
-                    robot.MoveGripper(2, 0, 100, 100, 10000, 0, 0, 0, 0, 0)
+                    robot.MoveGripper(2, 0, 100, 1, 5000, 1, 0, 0, 0, 0)
+
+                case 2:
+                    # moveJ naar pick-up area
+                    robot.MoveJ(joint_pos=j_pos[0],
+                                tool=tool, user=user, vel=50)
+
+                case 3:
+                    # moveJ naar drop area
+                    robot.MoveJ(joint_pos=j_pos[1],
+                                tool=tool, user=user, vel=50)
+
                 case 5:
-                    print("Noodknop functie")
+                    print("NoodKnop")
                     stop()
+
                 case 15:
+                    # Gebruik deze knop om te wisselen tussen motor as 5 en de grijper
                     gripper = not gripper
                     robot.SetDO(0, gripper)
                     time.sleep(1)
 
 
 def main():
-    global r, a, Rotation, RotationInc, ZasDown, ZasUp, S4, S5, stopped
-    print("Main")
-
+    global a, stopped, Rotation, RotationInc, ZasDown, ZasUp, S4, S5
     setup()
+
     while True:
         readJoystick()
+        # Als alle bewegingen False zijn wordt de beweging compleet gestopt
         if Rotation == False and RotationInc == False and ZasDown == False and ZasUp == False and S4 == False and S5 == False and stopped == False:
-            robot.StopJOG(3)
-            robot.StopMotion()
-            robot.MotionQueueClear()
+            rtn = robot.StopJOG(3)
+            rtn = robot.ServoMoveEnd()
+            # Als er een limit error is wordt deze weg gehaald want ServoMoveEnd geeft ook de limit errors terug
+            if rtn == 14:
+                print("Een limit", rtn)
+                rtn = robot.ResetAllError()
+                print(rtn)
+            rtn = robot.StopMotion()
+            rtn = robot.MotionQueueClear()
             stopped = True
+            rtn, pos = robot.GetActualTCPPose()
+            a = calc.getA(pos[0], pos[1])
 
 
 if __name__ == "__main__":
@@ -267,4 +324,4 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         robot.CloseRPC()
-        print("Stopped")
+        print("Connection closed")
