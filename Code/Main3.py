@@ -31,10 +31,6 @@ gripper = False
 secure = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0]
 mode = 0
 config = 1
-rtn = robot.SetAnticollision(mode, secure, config)
-print("Anticollision set: ", rtn)
-rtn = robot.SetCollisionStrategy(3, 2000, 100, 250)
-print("CollisionStrategy set: ", rtn)
 
 lastValX = lastValY = lastValZup = lastValZdown = lastValS5 = lastValS4 = 0
 
@@ -45,6 +41,11 @@ pygame.joystick.init()
 joystick = pygame.joystick.Joystick(0)
 joystick.init()
 robot.ActGripper(2, 1)
+
+rtn = robot.SetAnticollision(mode, secure, config)
+print("Anticollision set: ", rtn)
+rtn = robot.SetCollisionStrategy(3, 2000, 100, 250)
+print("CollisionStrategy set: ", rtn)
 
 
 def JOG(nb, dir, vel, ref):
