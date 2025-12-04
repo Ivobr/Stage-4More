@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="F1s7tqKkCICuLAjub3DT" name="Page-1">
-        <mxGraphModel dx="484" dy="443" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1470" dy="978" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -404,7 +404,7 @@
                 <mxCell id="102" value="ServoCart(axis_val, direction)" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=1;collapsible=0;width=160;" parent="1" vertex="1">
                     <mxGeometry x="1940" y="610" width="370" height="500" as="geometry"/>
                 </mxCell>
-                <mxCell id="179" value="" style="edgeStyle=none;html=1;" edge="1" parent="102" source="105" target="176">
+                <mxCell id="179" value="" style="edgeStyle=none;html=1;" parent="102" source="105" target="176" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="105" value="Calculate step size on basis of axis_val and direction" style="whiteSpace=wrap;html=1;dashed=0;rounded=1;" parent="102" vertex="1">
@@ -419,26 +419,26 @@
                 <mxCell id="108" value="Move towords new coordinates" style="whiteSpace=wrap;html=1;dashed=0;rounded=1;" parent="102" vertex="1">
                     <mxGeometry x="50" y="390" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="177" value="" style="edgeStyle=none;html=1;" edge="1" parent="102" source="176" target="107">
+                <mxCell id="177" value="" style="edgeStyle=none;html=1;" parent="102" source="176" target="107" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="178" value="False" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="177">
+                <mxCell id="178" value="False" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="177" vertex="1" connectable="0">
                     <mxGeometry x="-0.046" y="-1" relative="1" as="geometry">
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="181" value="" style="edgeStyle=none;html=1;" edge="1" parent="102" source="176" target="180">
+                <mxCell id="181" value="" style="edgeStyle=none;html=1;" parent="102" source="176" target="180" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="182" value="True" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="181">
+                <mxCell id="182" value="True" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="181" vertex="1" connectable="0">
                     <mxGeometry x="-0.1131" y="-1" relative="1" as="geometry">
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="176" value="if queue size &amp;gt; 3" style="rhombus;whiteSpace=wrap;html=1;dashed=0;rounded=1;" vertex="1" parent="102">
+                <mxCell id="176" value="if queue size &amp;gt; 3" style="rhombus;whiteSpace=wrap;html=1;dashed=0;rounded=1;" parent="102" vertex="1">
                     <mxGeometry x="50" y="160" width="120" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="180" value="Return" style="whiteSpace=wrap;html=1;dashed=0;rounded=1;" vertex="1" parent="102">
+                <mxCell id="180" value="Return" style="whiteSpace=wrap;html=1;dashed=0;rounded=1;" parent="102" vertex="1">
                     <mxGeometry x="220" y="170" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="109" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;rounded=1;curved=0;" parent="1" source="92" target="105" edge="1">
@@ -497,7 +497,7 @@
                         <mxPoint y="-2" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="122" value="If number == 5" style="rhombus;whiteSpace=wrap;html=1;dashed=0;rounded=1;" parent="111" vertex="1">
+                <mxCell id="122" value="elIf number == 5" style="rhombus;whiteSpace=wrap;html=1;dashed=0;rounded=1;" parent="111" vertex="1">
                     <mxGeometry x="50" y="260" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="143" value="" style="edgeStyle=none;html=1;" parent="111" source="126" target="142" edge="1">

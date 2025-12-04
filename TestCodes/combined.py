@@ -15,8 +15,9 @@ count = 0
 
 # coordinates
 # [[pick-up area],[drop area]]
-j_pos = [[87.29, -120.27, -91.78, -58.19, 90, 58],
-         [91.606, -49.13, 66.899, -105.166, -90, 58]
+j_pos = [[-2.29, -120.27, -91.78, -58.19, 90, 58],
+         [91.5208969116211, -138.09619140625, -39.79835510253906, -
+             93.94332885742188, 87.31324768066406, 54.6949462890625]
          ]
 pos = []  # huidige positie
 r = 0  # Radius
@@ -223,11 +224,16 @@ def readJoystick():
                     print("Pos ", pos[2])
                     rtn, speed = robot.GetTargetTCPSpeed()
                     print("Speed ", speed[2])
-                    if pos[2] < 150 and speed[2] < -200:
+                    if pos[2] < 150 and slowing == False:
+                        slowing = True
                         robot.StopJOG(3)
                         time.sleep(1)
-                        JOG(2, 0, 0.25)
+                        JOG(2, 0, 0.5)
                         # robot.ImmStopJOG()
+                    elif pos[2] < 150 and slowing == True:
+                        if axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2:
+                            JOG(2, 0, 0.25)
+                            lastValZdown = axis_val
                     elif pos[2] < -20:
                         robot.ImmStopJOG()
                     elif axis_val - lastValZdown > 0.2 or axis_val - lastValZdown < -0.2 and slowing == False:
@@ -242,7 +248,7 @@ def readJoystick():
                 if axis_val > 0.1:
                     rtn, pos = robot.GetActualTCPPose()
                     print("Pos ", pos[2])
-                    if pos[2] > 400:
+                    if pos[2] > 500:
                         robot.StopJOG(3)
                     elif axis_val - lastValZup > 0.2 or axis_val - lastValZup < -0.2:
                         JOG(2, 1, axis_val)
